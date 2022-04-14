@@ -2,9 +2,15 @@
 A Python 3  **pro**tein structure **fet**cher. Retrieves the cif or pdb files from either the RCSB Protein Data Bank ([PDB](https://www.rcsb.org), using [pypdb](https://github.com/williamgilpin/pypdb)) or [Alphafold](http://alphafold.ebi.ac.uk/) using the [Uniprot](http://uniprot.org/) ID. 
 
 
+### Dependencies
+
+Please install the latest version of PyPDB using:
+
+`$ pip install git+git://github.com/williamgilpin/pypdb`
+
 ### Installation
 
-Install using pip:
+Install `profet` using pip:
 
 `$ pip install profet`
 

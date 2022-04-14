@@ -12,7 +12,7 @@ ONLY_ALPHAFOLD = "F4HvG8"
 ONLY_PDB = ""
 
 
-def test_create_fetcher():
+def test_create_default_fetcher():
     prot_fetcher = Fetcher()
     assert prot_fetcher.get_default_db() == 'pdb'
 
@@ -22,4 +22,14 @@ def test_set_default_database():
     prot_fetcher.set_default_db('alphafold')
     assert prot_fetcher.get_default_db() == 'alphafold'
 
-# test_db.get_file_url(uniprot_id="F4HvG8")
+
+def test_id_available_alphafold():
+    prot_fetcher = Fetcher()
+    prot_fetcher.get_file(ONLY_ALPHAFOLD)
+    assert prot_fetcher.search_history()[ONLY_ALPHAFOLD] == ["alphafold"]
+
+
+def test_id_available_pdb():
+    prot_fetcher = Fetcher()
+    prot_fetcher.get_file(ONLY_PDB)
+    assert prot_fetcher.search_history()[ONLY_PDB] == ["pdb"]
