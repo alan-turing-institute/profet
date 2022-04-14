@@ -1,5 +1,5 @@
-from alphafold import Alphafold_DB
-from pdb import PDB_DB
+from .alphafold import Alphafold_DB
+from .pdb import PDB_DB
 
 
 class Fetcher:
