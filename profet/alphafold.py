@@ -44,7 +44,7 @@ class Alphafold_DB:
         else:
             return "Filetype not supported"
 
-    def get_pdb(self, uniprot_id: str, filetype: str = "pdb", file_save: bool = False):
+    def get_pdb(self, uniprot_id: str, filetype: str = "pdb", file_save: bool = False, file_dir: str = "default"):
         """ Returns pdb/cif as strings, saves to file if requested """
         af_id = self.df.loc[self.df['Uniprot_ID'] == uniprot_id.upper()]["AF_ID"].to_numpy()[0]
         version = self.df.loc[self.df['Uniprot_ID'] == uniprot_id.upper()]["version"].to_numpy()[0]
@@ -55,8 +55,9 @@ class Alphafold_DB:
         if len(file.content) < 200:
             url = self.get_file_url(uniprot_id, filetype)
             file = requests.get(url)
+        file_dir = file_dir + "." + filetype
         if file_save:
-            open(file_save, 'wb').write(file.text)
+            open(file_dir, 'wb').write(file.text)
 
         return file.text
 

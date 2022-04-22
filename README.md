@@ -35,6 +35,8 @@ The files can be saved to a local file with `filesave`.
 
 `set_default_db` changes the default database into the given one between `'pdb'` and `'alphafold'`.
 
+`set_directory` changes the directory where the files are saved. Files save as `<directory>/<id>.<filetype>`.
+
 Run `search_history()` to see the search history of the fetcher.
 
 ### Issues and Feature Requests

@@ -8,6 +8,7 @@ class Fetcher:
         self.pdb = PDB_DB()
         self.alpha = Alphafold_DB()
         self.search_results = {}
+        self.save_directory = ""
 
     def check_db(self, uniprot_id: str):
         """ Checks which database contain the searched ID.
@@ -35,10 +36,11 @@ class Fetcher:
             Output:
                 File from the database
         """
+        save_dir = self.save_directory + prot_id
         if db == 'pdb':
-            return self.pdb.get_pdb(prot_id, filetype=filetype, file_save=filesave)
+            return self.pdb.get_pdb(prot_id, filetype=filetype, file_save=filesave, file_dir=save_dir)
         elif db == 'alphafold':
-            return self.alpha.get_pdb(prot_id, filetype=filetype, file_save=filesave)
+            return self.alpha.get_pdb(prot_id, filetype=filetype, file_save=filesave, file_dir=save_dir)
 
     def get_file(self, uniprot_id: str, filetype: str = 'pdb', filesave: bool = False, db: str = 'pdb'):
         """
@@ -67,6 +69,12 @@ class Fetcher:
     def search_history(self):
         """ Print the search history of the fetcher. """
         print(self.search_results)
+
+    def set_directory(self, new_dir: str):
+        """ Set the saving directory """
+        if not new_dir.endswith("/"):
+            new_dir = new_dir + "/"
+        self.save_directory = new_dir
 
     def get_default_db(self):
         """ Return the default database."""
