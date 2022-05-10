@@ -38,9 +38,9 @@ class Fetcher:
         """
         save_dir = self.save_directory + prot_id
         if db == 'pdb':
-            return self.pdb.get_pdb(prot_id, filetype=filetype, file_save=filesave, file_dir=save_dir)
+            return save_dir, self.pdb.get_pdb(prot_id, filetype=filetype, file_save=filesave, file_dir=save_dir)
         elif db == 'alphafold':
-            return self.alpha.get_pdb(prot_id, filetype=filetype, file_save=filesave, file_dir=save_dir)
+            return save_dir, self.alpha.get_pdb(prot_id, filetype=filetype, file_save=filesave, file_dir=save_dir)
 
     def get_file(self, uniprot_id: str, filetype: str = 'pdb', filesave: bool = False, db: str = 'pdb'):
         """
@@ -51,20 +51,23 @@ class Fetcher:
                 filesave: bool, Option to save into a file
                 db: str, database from which to retrieve the file
             Output:
+                File name of the saved file
                 File from the database, or None if it is not available in any database.
         """
         self.search_results[uniprot_id] = self.check_db(uniprot_id)
         if len(self.search_results[uniprot_id]):
             if db in self.search_results[uniprot_id]:
                 print("Structure available on defaulted database: "+db)
-                return self.file_from_db(prot_id=uniprot_id, filetype=filetype, filesave=filesave, db=db)
+                filename, file = self.file_from_db(prot_id=uniprot_id, filetype=filetype, filesave=filesave, db=db)
+                return filename, file
             else:
                 for item in self.search_results[uniprot_id]:
                     print("Structure available on alternative database: "+item)
-                    return self.file_from_db(prot_id=uniprot_id, filetype=filetype, filesave=filesave, db=item)
+                    filename, file = self.file_from_db(prot_id=uniprot_id, filetype=filetype, filesave=filesave, db=db)
+                    return filename, file
         else:
             print("Structure not available on any database")
-            return None
+            return None, None
 
     def search_history(self):
         """ Print the search history of the fetcher. """

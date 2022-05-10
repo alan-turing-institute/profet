@@ -24,6 +24,12 @@ class PDB_DB:
 
         pdb_id = self.results[0]
         pdb_file = pypdb.clients.pdb.pdb_client.get_pdb_file(pdb_id, filetype)
+        if pdb_file is None:
+            if filetype == "pdb":
+                filetype = "cif"
+            else:
+                filetype = "pdb"
+            pdb_file = pypdb.clients.pdb.pdb_client.get_pdb_file(pdb_id, filetype)
         file_dir = file_dir + "." + filetype
         if file_save:
             open(file_dir, 'wb').write(pdb_file)
