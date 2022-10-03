@@ -63,7 +63,7 @@ class Fetcher:
             else:
                 for item in self.search_results[uniprot_id]:
                     print("Structure available on alternative database: "+item)
-                    filename, file = self.file_from_db(prot_id=uniprot_id, filetype=filetype, filesave=filesave, db=db)
+                    filename, file = self.file_from_db(prot_id=uniprot_id, filetype=filetype, filesave=filesave, db=item)
                     return filename, file
         else:
             print("Structure not available on any database")
@@ -71,7 +71,7 @@ class Fetcher:
 
     def search_history(self):
         """ Print the search history of the fetcher. """
-        print(self.search_results)
+        return self.search_results
 
     def set_directory(self, new_dir: str):
         """ Set the saving directory """

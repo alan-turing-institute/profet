@@ -14,14 +14,18 @@ from bs4 import BeautifulSoup
 class Alphafold_DB:
 
     def __init__(self):
-        self.df = pd.read_csv("http://ftp.ebi.ac.uk/pub/databases/alphafold/accession_ids.txt",
-                              names=["Uniprot_ID", "First_residue", "Last_residue", "AF_ID", "version"], encoding="iso-8859-1")
+        #self.df = pd.read_csv("http://ftp.ebi.ac.uk/pub/databases/alphafold/accession_ids.csv",
+        #                      names=["Uniprot_ID", "First_residue", "Last_residue", "AF_ID", "version"], encoding="iso-8859-1")
+        self.df = None
         self.session = HTMLSession()
         self.common_url = "https://alphafold.ebi.ac.uk/entry/"
 
     def check_structure(self, uniprot_id: str):
         """ Check whether a structure is present in AlphaFold database"""
-        return self.df['Uniprot_ID'].eq(uniprot_id.upper()).any()
+        uniprot_id = uniprot_id.upper()
+        url = self.make_url(uniprot_id, "pdb")
+        r = requests.get(url)
+        return r.status_code != 404
 
     def get_file_url(self, uniprot_id: str, filetype: str = "pdb"):
         """ Get file url relative to an id from the Alphafold entry page"""
@@ -44,17 +48,33 @@ class Alphafold_DB:
         else:
             return "Filetype not supported"
 
+    def make_url(self, uniprot_id: str, filetype: str = "pdb"):
+        uniprot_id = uniprot_id.upper()
+        af_id = "AF-" + uniprot_id + "-F1"
+
+        # https: // alphafold.ebi.ac.uk / files / AF - A0A6J1BG53 - F1 - model_v3.pdb
+        version = 3
+        url = "https://alphafold.ebi.ac.uk/files/" + af_id + "-model_v" + str(version) + "." + filetype
+
+        return url
+
     def get_pdb(self, uniprot_id: str, filetype: str = "pdb", file_save: bool = False, file_dir: str = "default"):
         """ Returns pdb/cif as strings, saves to file if requested """
-        af_id = self.df.loc[self.df['Uniprot_ID'] == uniprot_id.upper()]["AF_ID"].to_numpy()[0]
-        version = self.df.loc[self.df['Uniprot_ID'] == uniprot_id.upper()]["version"].to_numpy()[0]
+        #af_id = self.df.loc[self.df['Uniprot_ID'] == uniprot_id.upper()]["AF_ID"].to_numpy()[0]
+        #version = self.df.loc[self.df['Uniprot_ID'] == uniprot_id.upper()]["version"].to_numpy()[0]
+        #af_id = "AF-"+uniprot_id+"-F1"
 
-        url = "https://alphafold.ebi.ac.uk/files/" + af_id + "-model_v" + str(version) + "." + filetype
+        #https: // alphafold.ebi.ac.uk / files / AF - A0A6J1BG53 - F1 - model_v3.pdb
+        #version = 3
+        #url = "https://alphafold.ebi.ac.uk/files/" + af_id + "-model_v" + str(version) + "." + filetype
+        url = self.make_url(uniprot_id, filetype)
         file = requests.get(url)
         print(url)
         if len(file.content) < 200:
             url = self.get_file_url(uniprot_id, filetype)
             file = requests.get(url)
+
+
         file_dir = file_dir + "." + filetype
         if file_save:
             open(file_dir, 'wb').write(file.text)

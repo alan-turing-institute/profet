@@ -1,15 +1,9 @@
-"""
-Order of things to do:
-search if protein has hit in pdb
-if yes, return the hits for the protein. what if more than one?
-if no, return hits for the protein in alphafold w/ confidence interval.
-
-Option: go straight to alphafold or to pdb
-"""
 from profet import Fetcher
+from profet import alphafold
+from profet import pdb
 
 ONLY_ALPHAFOLD = "F4HvG8"
-ONLY_PDB = ""
+ONLY_PDB = "7U6Q"
 
 
 def test_create_default_fetcher():
@@ -21,6 +15,21 @@ def test_set_default_database():
     prot_fetcher = Fetcher()
     prot_fetcher.set_default_db('alphafold')
     assert prot_fetcher.get_default_db() == 'alphafold'
+
+
+def test_check_db_not_none():
+    prot_fetcher = Fetcher()
+    assert prot_fetcher.check_db(ONLY_ALPHAFOLD) is not None
+
+
+def test_check_structure_in_pdb():
+    pdb_db = pdb.PDB_DB()
+    assert pdb_db.check_structure(ONLY_PDB) is True
+
+
+def test_check_structure_in_alphafold():
+    af_db = alphafold.Alphafold_DB()
+    assert af_db.check_structure(ONLY_ALPHAFOLD) is True
 
 
 def test_id_available_alphafold():
