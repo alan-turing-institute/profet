@@ -8,13 +8,13 @@ ONLY_PDB = "7U6Q"
 
 def test_create_default_fetcher():
     prot_fetcher = Fetcher()
-    assert prot_fetcher.get_default_db() == 'pdb'
+    assert prot_fetcher.get_default_db() == "pdb"
 
 
 def test_set_default_database():
     prot_fetcher = Fetcher()
-    prot_fetcher.set_default_db('alphafold')
-    assert prot_fetcher.get_default_db() == 'alphafold'
+    prot_fetcher.set_default_db("alphafold")
+    assert prot_fetcher.get_default_db() == "alphafold"
 
 
 def test_check_db_not_none():
