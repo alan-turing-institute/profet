@@ -1,0 +1,8 @@
+name: profet
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - conda-build
+  - conda-verify
+  - anaconda-client
