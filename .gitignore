@@ -130,3 +130,6 @@ dmypy.json
 
 # Ignore tags
 tags
+
+# Ignore setuptools_scm version file
+profet/_version.py
