@@ -25,6 +25,13 @@ exclude = '''
 )
 '''
 
+
+[tool.mypy]
+ignore_missing_imports = true
+implicit_optional = true
+follow_imports = "skip"
+
+
 [tool.isort]
 profile = "black"
 line_length = 79

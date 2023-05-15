@@ -5,7 +5,6 @@ https://alphafold.ebi.ac.uk/files/AF-F4HVG8-F1-predicted_aligned_error_v2.json
 
 read entry: https://alphafold.ebi.ac.uk/entry/F4HVG8
 find cif, download that file"""
-import pandas as pd
 from requests_html import HTMLSession
 import requests
 from bs4 import BeautifulSoup
@@ -81,13 +80,12 @@ class Alphafold_DB:
         # url = "https://alphafold.ebi.ac.uk/files/" + af_id + "-model_v" + str(version) + "." + filetype
         url = self.make_url(uniprot_id, filetype)
         file = requests.get(url)
-        print(url)
         if len(file.content) < 200:
             url = self.get_file_url(uniprot_id, filetype)
             file = requests.get(url)
 
         file_dir = file_dir + "." + filetype
         if file_save:
-            open(file_dir, "wb").write(file.content)
+            open(file_dir, "w").write(file.text)
 
-        return file.text
+        return file_dir, file.text
