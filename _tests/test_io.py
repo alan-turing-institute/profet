@@ -19,7 +19,7 @@ def get_test_ids():
 
 def test_version():
     version = profet.__version__
-    assert version is not "unknown"
+    assert version != "unknown"
 
 
 def test_create_default_fetcher():
