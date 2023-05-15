@@ -7,7 +7,7 @@ write_to = "profet/_version.py"
 
 [tool.black]
 target-version = ['py36', 'py37', 'py38', 'py39']
-line-length = 79
+line-length = 80
 exclude = '''
 (
   /(
@@ -22,9 +22,9 @@ exclude = '''
     | dist
     | examples
   )/
+  | _version\.py
 )
 '''
-
 
 [tool.mypy]
 ignore_missing_imports = true
