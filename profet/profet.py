@@ -44,14 +44,14 @@ class Fetcher:
         """
         save_dir = self.save_directory + prot_id
         if db == "pdb":
-            return save_dir, self.pdb.get_pdb(
+            return self.pdb.get_pdb(
                 prot_id,
                 filetype=filetype,
                 file_save=filesave,
                 file_dir=save_dir,
             )
         elif db == "alphafold":
-            return save_dir, self.alpha.get_pdb(
+            return self.alpha.get_pdb(
                 prot_id,
                 filetype=filetype,
                 file_save=filesave,

@@ -1,7 +1,13 @@
 # profet
 A Python 3  **pro**tein structure **fet**cher. Retrieves the cif or pdb files from either the RCSB Protein Data Bank ([PDB](https://www.rcsb.org), using [pypdb](https://github.com/williamgilpin/pypdb)) or [Alphafold](http://alphafold.ebi.ac.uk/) using the [Uniprot](http://uniprot.org/) ID. 
 
+![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
+[![PyPI version shields.io](https://img.shields.io/pypi/v/profet.svg)](https://pypi.python.org/pypi/profet/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/python-profet.svg)](https://pypi.python.org/pypi/profet/)
+
 [![Building](https://github.com/jmp1985/profet/actions/workflows/python-package.yml/badge.svg)](https://github.com/jmp1985/profet/actions/workflows/python-package.yml)
+[![Publishing](https://github.com/jmp1985/profet/actions/workflows/python-publish.yml/badge.svg)](https://github.com/jmp1985/profet/actions/workflows/python-publish.yml)
+[![Conda](https://github.com/jmp1985/profet/actions/workflows/conda.yml/badge.svg)](https://github.com/jmp1985/profet/actions/workflows/conda.yml)
 
 ### Dependencies
 

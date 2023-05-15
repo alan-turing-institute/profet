@@ -31,7 +31,7 @@ class PDB_DB:
 
         pdb_id = self.results[0]
         pdb_file = pypdb.clients.pdb.pdb_client.get_pdb_file(
-            pdb_id, PDBFileType(filetype)
+            pdb_id, PDBFileType(filetype), compression=True
         )
         if pdb_file is None:
             if filetype == "pdb":
@@ -39,10 +39,10 @@ class PDB_DB:
             else:
                 filetype = "pdb"
             pdb_file = pypdb.clients.pdb.pdb_client.get_pdb_file(
-                pdb_id, PDBFileType(filetype)
+                pdb_id, PDBFileType(filetype), compression=True
             )
         file_dir = file_dir + "." + filetype
         if file_save:
             open(file_dir, "wb").write(pdb_file)
 
-        return pdb_file
+        return file_dir, pdb_file
