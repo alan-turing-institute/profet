@@ -3,7 +3,7 @@ A Python 3  **pro**tein structure **fet**cher. Retrieves the cif or pdb files fr
 
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
 [![PyPI version shields.io](https://img.shields.io/pypi/v/profet.svg)](https://pypi.python.org/pypi/profet/)
-[![PyPI pyversions](https://img.shields.io/pypi/pyversions/python-profet.svg)](https://pypi.python.org/pypi/python-profet/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/python-profet.svg)](https://pypi.python.org/pypi/profet/)
 
 [![Building](https://github.com/jmp1985/profet/actions/workflows/python-package.yml/badge.svg)](https://github.com/jmp1985/profet/actions/workflows/python-package.yml)
 [![Publishing](https://github.com/jmp1985/profet/actions/workflows/python-publish.yml/badge.svg)](https://github.com/jmp1985/profet/actions/workflows/python-publish.yml)
