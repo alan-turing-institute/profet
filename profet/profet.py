@@ -1,4 +1,5 @@
-from .alphafold import Alphafold_DB
+ Avatar
+Alan R Lowefrom .alphafold import Alphafold_DB
 from .pdb import PDB_DB
 
 
@@ -11,11 +12,11 @@ class Fetcher:
         self.save_directory = ""
 
     def check_db(self, uniprot_id: str):
-        """Checks which database contain the searched ID.
+        """Checks which database contains the searched ID.
         Input:
-        uniprot_id: str, ID from Uniprot
+        uniprot_id: str, ID from Uniprot.
         Output:
-        available_db: list of the databases where the id is available
+        available_db: list of the databases where the id is available.
         """
 
         available_db = []
@@ -35,12 +36,12 @@ class Fetcher:
         """
         Returns the file from the correspondent database.
             Input:
-                uniprot_id: str, ID from Uniprot
-                filetype: str, File type to be retrieved: cif, pdb
-                filesave: bool, Option to save into a file
-                db: str, database from which to retrieve the file
+                uniprot_id: str, ID from Uniprot.
+                filetype: str, File type to be retrieved: cif, pdb.
+                filesave: bool, Option to save into a file.
+                db: str, database from which to retrieve the file.
             Output:
-                File from the database
+                File from the database.
         """
         save_dir = self.save_directory + prot_id
         if db == "pdb":
@@ -66,14 +67,14 @@ class Fetcher:
         db: str = "pdb",
     ):
         """
-        Returns the file from an available database, starting with the defaulted that the user provided.
+        Returns the file from an available database, starting with the default that the user provided.
             Input:
-                uniprot_id: str, ID from Uniprot
-                filetype: str, File type to be retrieved: cif, pdb
-                filesave: bool, Option to save into a file
-                db: str, database from which to retrieve the file
+                uniprot_id: str, ID from Uniprot.
+                filetype: str, File type to be retrieved: cif, pdb.
+                filesave: bool, Option to save into a file.
+                db: str, database from which to retrieve the file.
             Output:
-                File name of the saved file
+                File name of the saved file.
                 File from the database, or None if it is not available in any database.
         """
         self.search_results[uniprot_id] = self.check_db(uniprot_id)
@@ -90,7 +91,7 @@ class Fetcher:
             else:
                 for item in self.search_results[uniprot_id]:
                     print(
-                        "Structure available on alternative database: " + item
+                        "Structure available in alternative database: " + item
                     )
                     filename, file = self.file_from_db(
                         prot_id=uniprot_id,
@@ -100,7 +101,7 @@ class Fetcher:
                     )
                     return filename, file
         else:
-            print("Structure not available on any database")
+            print("Structure not available in any database.")
             return None, None
 
     def search_history(self):
@@ -108,7 +109,7 @@ class Fetcher:
         return self.search_results
 
     def set_directory(self, new_dir: str):
-        """Set the saving directory"""
+        """Set the saving directory."""
         if not new_dir.endswith("/"):
             new_dir = new_dir + "/"
         self.save_directory = new_dir
@@ -118,7 +119,7 @@ class Fetcher:
         return self.type
 
     def set_default_db(self, db: str):
-        """Set the default database"""
+        """Set the default database."""
         if db in ["pdb", "alphafold"]:
             self.type = db
         else:
