@@ -19,27 +19,27 @@ class Alphafold_DB:
         self.common_url = "https://alphafold.ebi.ac.uk/entry/"
 
     def check_structure(self, uniprot_id: str):
-        """Check whether a structure is present in AlphaFold database"""
+        """Check whether a structure is present in the AlphaFold database."""
         uniprot_id = uniprot_id.upper()
         url = self.make_url(uniprot_id, "pdb")
         r = requests.get(url)
         return r.status_code != 404
 
     def get_file_url(self, uniprot_id: str, filetype: str = "pdb"):
-        """Get file url relative to an id from the Alphafold entry page"""
+        """Get file url relative to an id from the Alphafold entry page."""
 
         if filetype in ["pdb", "cif"]:
             uniprot_id = uniprot_id.upper()
-            # Get the url with the id
+            # Get the url with the id.
             response = self.session.get(self.common_url + uniprot_id)
 
-            # Render the javascript
+            # Render the javascript.
             response.html.render()
 
-            # Parse the rendered html
+            # Parse the rendered html.
             soup = BeautifulSoup(response.html.html, "lxml")
 
-            # Find url correspondent to the intended filetype
+            # Find url correspondent to the intended filetype.
             url = soup.select_one("a[href*=" + filetype + "]")
 
             return url["href"]
@@ -70,7 +70,7 @@ class Alphafold_DB:
         file_save: bool = False,
         file_dir: str = "default",
     ):
-        """Returns pdb/cif as strings, saves to file if requested"""
+        """Returns pdb/cif as strings, saves to file if requested."""
         # af_id = self.df.loc[self.df['Uniprot_ID'] == uniprot_id.upper()]["AF_ID"].to_numpy()[0]
         # version = self.df.loc[self.df['Uniprot_ID'] == uniprot_id.upper()]["version"].to_numpy()[0]
         # af_id = "AF-"+uniprot_id+"-F1"
