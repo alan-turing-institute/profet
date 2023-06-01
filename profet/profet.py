@@ -1,5 +1,4 @@
- Avatar
-Alan R Lowefrom .alphafold import Alphafold_DB
+from .alphafold import Alphafold_DB
 from .pdb import PDB_DB
 
 
