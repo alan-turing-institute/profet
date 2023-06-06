@@ -50,10 +50,14 @@ Run `search_history()` to see the search history of the fetcher.
 
  ```
 Python3 
+
 $ import profet as pf
 $ fetcher = pf.Fetcher()
 $ fetcher.set_directory("/path/to/directory/folder")
 $ fetcher.get_file(uniprot_id = "P61316", filetype = "pdb", filesave = True, db = "alphafold")
+
+$ fetcher.search_history()
+{'P61316': ['pdb', 'alphafold']}
 ```
 
 Loads Profet and the file-fetcher, then specifies a directory to save the files at.
