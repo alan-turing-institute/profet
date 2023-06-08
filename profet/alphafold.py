@@ -29,7 +29,7 @@ class Alphafold_DB:
 
     def check_structure(self, uniprot_id: str) -> bool:
         """
-        Check whether a structure is present in AlphaFold database
+        Check whether a structure is present in the AlphaFold database
 
         Args:
             uniprot_id: The uniprot id of the protein
@@ -45,7 +45,7 @@ class Alphafold_DB:
 
     def get_file_url(self, uniprot_id: str, filetype: str = "pdb") -> str:
         """
-        Get file url relative to an id from the Alphafold entry page
+        Get file url relative to an id from the the Alphafold entry page
 
         Args:
             uniprot_id: The uniprot id of the protein
@@ -59,16 +59,16 @@ class Alphafold_DB:
         # Do we recognise the filetpye, otherwise raise an exception.
         if filetype in ["pdb", "cif"]:
             uniprot_id = uniprot_id.upper()
-            # Get the url with the id
+            # Get the url with the id.
             response = self.session.get(self.common_url + uniprot_id)
 
-            # Render the javascript
+            # Render the javascript.
             response.html.render()
 
-            # Parse the rendered html
+            # Parse the rendered html.
             soup = BeautifulSoup(response.html.html, "lxml")
 
-            # Find url correspondent to the intended filetype
+            # Find url correspondent to the intended filetype.
             url = soup.select_one("a[href*=" + filetype + "]")
         else:
             raise RuntimeError("Filetype not supported: %s" % filetype)
@@ -113,7 +113,7 @@ class Alphafold_DB:
         filedir: str = "default",
     ) -> tuple:
         """
-        Returns pdb/cif as strings, saves to file if requested
+        Returns pdb/cif as strings, saves to file if requested.
 
         Args:
             uniprot_id: ID from Uniprot

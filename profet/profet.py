@@ -22,7 +22,7 @@ class Fetcher:
 
     def check_db(self, uniprot_id: str) -> list:
         """
-        Checks which database contain the searched ID.
+        Checks which database contains the searched ID.
 
         Args:
             uniprot_id: ID from Uniprot
@@ -50,10 +50,10 @@ class Fetcher:
         Returns the file from the correspondent database.
 
         Args:
-            uniprot_id: ID from Uniprot
-            filetype: File type to be retrieved: cif, pdb
-            filesave: Option to save into a file
-            db: database from which to retrieve the file
+            uniprot_id: ID from Uniprot.
+            filetype: File type to be retrieved: cif, pdb.
+            filesave: Option to save into a file.
+            db: database from which to retrieve the file.
 
         Returns:
             Tuple containing the filename and file from the database
@@ -88,13 +88,13 @@ class Fetcher:
     ) -> tuple:
         """
         Returns the file from an available database, starting with the
-        defaulted that the user provided.
+        default that the user provided.
 
         Args:
-            uniprot_id: ID from Uniprot
-            filetype: File type to be retrieved: cif, pdb
-            filesave: Option to save into a file
-            db: database from which to retrieve the file
+            uniprot_id: ID from Uniprot.
+            filetype: File type to be retrieved: cif, pdb.
+            filesave: Option to save into a file.
+            db: database from which to retrieve the file.
 
         Returns:
             A tuple containing:
@@ -115,7 +115,7 @@ class Fetcher:
             else:
                 for item in self.search_results[uniprot_id]:
                     print(
-                        "Structure available on alternative database: " + item
+                        "Structure available in alternative database: " + item
                     )
                     filename, filedata = self.file_from_db(
                         prot_id=uniprot_id,
@@ -141,7 +141,7 @@ class Fetcher:
 
     def set_directory(self, new_dir: str):
         """
-        Set the saving directory
+        Set the saving directory.
 
         Args:
             new_dir: The directory to save data
@@ -161,7 +161,7 @@ class Fetcher:
 
     def set_default_db(self, db: str):
         """
-        Set the default database
+        Set the default database.
 
         Args:
             db: The default db (pdb or alphafold)
