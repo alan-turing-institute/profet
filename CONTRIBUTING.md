@@ -109,9 +109,6 @@ Enhancement suggestions are tracked as [GitHub issues](https://github.com/alan-t
 - **Describe the current behavior** and **explain which behavior you expected to see instead** and why. At this point you can also tell which alternatives do not work for you.
 - **Explain why this enhancement would be useful** to most profet users. You may also want to point out the other projects that solved it better and which could serve as inspiration.
 
-## Join The Project Team
-<!-- TODO -->
-
 <!-- omit in toc -->
 ## Attribution
 This guide is based on [contributing gen](https://github.com/bttger/contributing-gen)!
