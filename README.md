@@ -50,5 +50,5 @@ If you run into an issue, or if you find a workaround for an existing issue, we 
 
 ### Contributions
 
-If you would like to help contribute to profet, please read our [contribution](https://github.com/alan-turing-institute/profet/CONTRIBUTING.md) guide and [code of conduct](https://github.com/alan-turing-institute/profet/CODE_OF_CONDUCT.md)
+If you would like to help contribute to profet, please read our [contribution](CONTRIBUTING.md) guide and [code of conduct](CODE_OF_CONDUCT.md).
 
