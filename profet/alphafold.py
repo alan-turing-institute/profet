@@ -11,23 +11,52 @@ from bs4 import BeautifulSoup
 
 
 class Alphafold_DB:
+    """
+    A class to represent the Alphafold database
+
+    """
+
     def __init__(self):
+        """
+        Initialise the Alphafold data base class
+
+        """
         # self.df = pd.read_csv("http://ftp.ebi.ac.uk/pub/databases/alphafold/accession_ids.csv",
         #                      names=["Uniprot_ID", "First_residue", "Last_residue", "AF_ID", "version"], encoding="iso-8859-1")
         self.df = None
         self.session = HTMLSession()
         self.common_url = "https://alphafold.ebi.ac.uk/entry/"
 
-    def check_structure(self, uniprot_id: str):
-        """Check whether a structure is present in AlphaFold database"""
+    def check_structure(self, uniprot_id: str) -> bool:
+        """
+        Check whether a structure is present in AlphaFold database
+
+        Args:
+            uniprot_id: The uniprot id of the protein
+
+        Returns:
+            Is the protein in the Alphafold database (True/False)
+
+        """
         uniprot_id = uniprot_id.upper()
         url = self.make_url(uniprot_id, "pdb")
         r = requests.get(url)
         return r.status_code != 404
 
-    def get_file_url(self, uniprot_id: str, filetype: str = "pdb"):
-        """Get file url relative to an id from the Alphafold entry page"""
+    def get_file_url(self, uniprot_id: str, filetype: str = "pdb") -> str:
+        """
+        Get file url relative to an id from the Alphafold entry page
 
+        Args:
+            uniprot_id: The uniprot id of the protein
+            filetype: The type of file to download (pdb or cif)
+
+        Returns:
+            The URL of the file to download
+
+        """
+
+        # Do we recognise the filetpye, otherwise raise an exception.
         if filetype in ["pdb", "cif"]:
             uniprot_id = uniprot_id.upper()
             # Get the url with the id
@@ -41,12 +70,25 @@ class Alphafold_DB:
 
             # Find url correspondent to the intended filetype
             url = soup.select_one("a[href*=" + filetype + "]")
-
-            return url["href"]
         else:
-            return "Filetype not supported"
+            raise RuntimeError("Filetype not supported: %s" % filetype)
 
-    def make_url(self, uniprot_id: str, filetype: str = "pdb"):
+        # Return the URL
+        return url["href"]
+
+    def make_url(self, uniprot_id: str, filetype: str = "pdb") -> str:
+        """
+        Make the URL for the protein
+
+        Args:
+            uniprot_id: The uniprot id of the protein
+            filetype: The type of file to download (pdb or cif)
+
+        Returns:
+            The URL of the file to download
+
+        """
+
         uniprot_id = uniprot_id.upper()
         af_id = "AF-" + uniprot_id + "-F1"
 
@@ -67,10 +109,22 @@ class Alphafold_DB:
         self,
         uniprot_id: str,
         filetype: str = "pdb",
-        file_save: bool = False,
-        file_dir: str = "default",
-    ):
-        """Returns pdb/cif as strings, saves to file if requested"""
+        filesave: bool = False,
+        filedir: str = "default",
+    ) -> tuple:
+        """
+        Returns pdb/cif as strings, saves to file if requested
+
+        Args:
+            uniprot_id: ID from Uniprot
+            filetype: File type to be retrieved: cif, pdb
+            filesave: Option to save into a file
+            filedir: The directory to save the data
+
+        Returns:
+            Tuple containing the filename and file from the database
+
+        """
         # af_id = self.df.loc[self.df['Uniprot_ID'] == uniprot_id.upper()]["AF_ID"].to_numpy()[0]
         # version = self.df.loc[self.df['Uniprot_ID'] == uniprot_id.upper()]["version"].to_numpy()[0]
         # af_id = "AF-"+uniprot_id+"-F1"
@@ -78,14 +132,22 @@ class Alphafold_DB:
         # https: // alphafold.ebi.ac.uk / files / AF - A0A6J1BG53 - F1 - model_v3.pdb
         # version = 3
         # url = "https://alphafold.ebi.ac.uk/files/" + af_id + "-model_v" + str(version) + "." + filetype
+
+        # Make the URL
         url = self.make_url(uniprot_id, filetype)
+
+        # Perform the HTML request to get the file
         file = requests.get(url)
         if len(file.content) < 200:
             url = self.get_file_url(uniprot_id, filetype)
             file = requests.get(url)
 
-        file_dir = file_dir + "." + filetype
-        if file_save:
-            open(file_dir, "w").write(file.text)
+        # Update the filename
+        filedir = filedir + "." + filetype
 
-        return file_dir, file.text
+        # Optionally save the data to disk
+        if filesave:
+            open(filedir, "w").write(file.text)
+
+        # Return the filename and file contents
+        return filedir, file.text
