@@ -5,9 +5,8 @@ A Python 3  **pro**tein structure **fet**cher. Retrieves the cif or pdb files fr
 [![PyPI version shields.io](https://img.shields.io/pypi/v/profet.svg)](https://pypi.python.org/pypi/profet/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/python-profet.svg)](https://pypi.python.org/pypi/profet/)
 
-[![Building](https://github.com/jmp1985/profet/actions/workflows/python-package.yml/badge.svg)](https://github.com/jmp1985/profet/actions/workflows/python-package.yml)
-[![Publishing](https://github.com/jmp1985/profet/actions/workflows/python-publish.yml/badge.svg)](https://github.com/jmp1985/profet/actions/workflows/python-publish.yml)
-[![Conda](https://github.com/jmp1985/profet/actions/workflows/conda.yml/badge.svg)](https://github.com/jmp1985/profet/actions/workflows/conda.yml)
+[![Building](https://github.com/alan-turing-insitute/profet/actions/workflows/python-package.yml/badge.svg)](https://github.com/alan-turing-insitute/profet/actions/workflows/python-package.yml)
+[![Publishing](https://github.com/alan-turing-insitute/profet/actions/workflows/python-publish.yml/badge.svg)](https://github.com/alan-turing-insitute/profet/actions/workflows/python-publish.yml)
 
 ### Dependencies
 
@@ -47,5 +46,9 @@ The files can be saved to a local file with `filesave`.
 Run `search_history()` to see the search history of the fetcher.
 
 ### Issues and Feature Requests
-If you run into an issue, or if you find a workaround for an existing issue, we would very much appreciate it if you could post your question or code as a [GitHub issue](https://github.com/alan-turing-institute/profet/issues).
+If you run into an issue, or if you find a workaround for an existing issue, we would very much appreciate it if you could post your question or code as a [GitHub issue](https://github.com/alan-turing-institute/profet/issues). 
+
+### Contributions
+
+If you would like to help contribute to profet, please read our [contribution](https://github.com/alan-turing-institute/profet/CONTRIBUTING.md) guide and [code of conduct](https://github.com/alan-turing-institute/profet/CODE_OF_CONDUCT.md)
 
