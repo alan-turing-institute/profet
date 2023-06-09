@@ -3,19 +3,33 @@ from .pdb import PDB_DB
 
 
 class Fetcher:
+    """
+    The main class in profet to fetch protein structures from the PDB and
+    alphafold databases.
+
+    """
+
     def __init__(self, main_db: str = "pdb"):
+        """
+        Initialise the fetcher
+
+        """
         self.type = main_db
         self.pdb = PDB_DB()
         self.alpha = Alphafold_DB()
         self.search_results = {}  # type: ignore
         self.save_directory = ""
 
-    def check_db(self, uniprot_id: str):
-        """Checks which database contains the searched ID.
-        Input:
-        uniprot_id: str, ID from Uniprot.
-        Output:
-        available_db: list of the databases where the id is available.
+    def check_db(self, uniprot_id: str) -> list:
+        """
+        Checks which database contains the searched ID.
+
+        Args:
+            uniprot_id: ID from Uniprot
+
+        Returns:
+            The list of the databases where the id is available
+
         """
 
         available_db = []
@@ -31,32 +45,39 @@ class Fetcher:
         filetype: str = "pdb",
         filesave: bool = False,
         db: str = "pdb",
-    ):
+    ) -> tuple:
         """
         Returns the file from the correspondent database.
-            Input:
-                uniprot_id: str, ID from Uniprot.
-                filetype: str, File type to be retrieved: cif, pdb.
-                filesave: bool, Option to save into a file.
-                db: str, database from which to retrieve the file.
-            Output:
-                File from the database.
+
+        Args:
+            uniprot_id: ID from Uniprot.
+            filetype: File type to be retrieved: cif, pdb.
+            filesave: Option to save into a file.
+            db: database from which to retrieve the file.
+
+        Returns:
+            Tuple containing the filename and file from the database
+
         """
         save_dir = self.save_directory + prot_id
         if db == "pdb":
-            return self.pdb.get_pdb(
+            filename, filedata = self.pdb.get_pdb(
                 prot_id,
                 filetype=filetype,
-                file_save=filesave,
-                file_dir=save_dir,
+                filesave=filesave,
+                filedir=save_dir,
             )
         elif db == "alphafold":
-            return self.alpha.get_pdb(
+            filename, filedata = self.alpha.get_pdb(
                 prot_id,
                 filetype=filetype,
-                file_save=filesave,
-                file_dir=save_dir,
+                filesave=filesave,
+                filedir=save_dir,
             )
+        else:
+            raise RuntimeError("Unknown db: %s" % db)
+
+        return filename, filedata
 
     def get_file(
         self,
@@ -64,62 +85,89 @@ class Fetcher:
         filetype: str = "pdb",
         filesave: bool = False,
         db: str = "pdb",
-    ):
+    ) -> tuple:
         """
-        Returns the file from an available database, starting with the default that the user provided.
-            Input:
-                uniprot_id: str, ID from Uniprot.
-                filetype: str, File type to be retrieved: cif, pdb.
-                filesave: bool, Option to save into a file.
-                db: str, database from which to retrieve the file.
-            Output:
-                File name of the saved file.
-                File from the database, or None if it is not available in any database.
+        Returns the file from an available database, starting with the
+        default that the user provided.
+
+        Args:
+            uniprot_id: ID from Uniprot.
+            filetype: File type to be retrieved: cif, pdb.
+            filesave: Option to save into a file.
+            db: database from which to retrieve the file.
+
+        Returns:
+            A tuple containing:
+            1. File name of the saved file
+            2. File from the database, or None if it is not available in any database.
+
         """
         self.search_results[uniprot_id] = self.check_db(uniprot_id)
         if len(self.search_results[uniprot_id]):
             if db in self.search_results[uniprot_id]:
                 print("Structure available on defaulted database: " + db)
-                filename, file = self.file_from_db(
+                filename, filedata = self.file_from_db(
                     prot_id=uniprot_id,
                     filetype=filetype,
                     filesave=filesave,
                     db=db,
                 )
-                return filename, file
             else:
                 for item in self.search_results[uniprot_id]:
                     print(
                         "Structure available in alternative database: " + item
                     )
-                    filename, file = self.file_from_db(
+                    filename, filedata = self.file_from_db(
                         prot_id=uniprot_id,
                         filetype=filetype,
                         filesave=filesave,
                         db=item,
                     )
-                    return filename, file
         else:
-            print("Structure not available in any database.")
-            return None, None
+            raise RuntimeError(
+                "Structure %s not available on any database" % uniprot_id
+            )
 
-    def search_history(self):
-        """Print the search history of the fetcher."""
+        # Return the filename and file
+        return filename, filedata
+
+    def search_history(self) -> dict:
+        """
+        Returns:
+            The search history of the fetcher.
+
+        """
         return self.search_results
 
     def set_directory(self, new_dir: str):
-        """Set the saving directory."""
+        """
+        Set the saving directory.
+
+        Args:
+            new_dir: The directory to save data
+
+        """
         if not new_dir.endswith("/"):
             new_dir = new_dir + "/"
         self.save_directory = new_dir
 
-    def get_default_db(self):
-        """Return the default database."""
+    def get_default_db(self) -> str:
+        """
+        Returns:
+            The default database.
+
+        """
         return self.type
 
     def set_default_db(self, db: str):
-        """Set the default database."""
+        """
+        Set the default database.
+
+        Args:
+            db: The default db (pdb or alphafold)
+
+        """
         if db in ["pdb", "alphafold"]:
             self.type = db
         else:
-            print("Database not available.")
+            raise RuntimeError("Database not available: %s" % db)
