@@ -45,6 +45,8 @@ The files can be saved to a local file with `filesave`.
 
 Run `search_history()` to see the search history of the fetcher.
 
+See the run_profet.ipynb notebook for usage examples.
+
 ### Issues and Feature Requests
 If you run into an issue, or if you find a workaround for an existing issue, we would very much appreciate it if you could post your question or code as a [GitHub issue](https://github.com/alan-turing-institute/profet/issues). 
 
