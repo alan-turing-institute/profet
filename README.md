@@ -62,6 +62,7 @@ $ fetcher.get_file(uniprot_id = "P61316", filetype = "pdb", filesave = True, db 
 $ fetcher.search_history()
 {'P61316': ['pdb', 'alphafold']}
 ```
+For more in-detail examples run the following [Python notebook](./run_profet.ipynb).
 
 Loads Profet and the file-fetcher, then specifies a directory to save the files at.
 Lastly, downloads the protein with uniprod ID "P61316", in pdb format from the Alphafold databank and saves it in the specified directory.
