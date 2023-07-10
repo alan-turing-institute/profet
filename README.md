@@ -49,6 +49,23 @@ The files can be saved to a local file with `filesave`.
 
 Run `search_history()` to see the search history of the fetcher.
 
+#### Example usage:
+
+ ```
+Python3 
+
+$ import profet as pf
+$ fetcher = pf.Fetcher()
+$ fetcher.set_directory("/path/to/directory/folder")
+$ fetcher.get_file(uniprot_id = "P61316", filetype = "pdb", filesave = True, db = "alphafold")
+
+$ fetcher.search_history()
+{'P61316': ['pdb', 'alphafold']}
+```
+
+Loads Profet and the file-fetcher, then specifies a directory to save the files at.
+Lastly, downloads the protein with uniprod ID "P61316", in pdb format from the Alphafold databank and saves it in the specified directory.
+
 ### Issues and Feature Requests
 If you run into an issue, or if you find a workaround for an existing issue, we would very much appreciate it if you could post your question or code as a [GitHub issue](https://github.com/alan-turing-institute/profet/issues). 
 
