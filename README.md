@@ -13,6 +13,10 @@ A Python 3  **pro**tein structure **fet**cher. Retrieves the cif or pdb files fr
 
 Please install the latest version of PyPDB using:
 
+`$ pip install pypdb`
+
+or
+
 `$ pip install git+git://github.com/williamgilpin/pypdb`
 
 ### Installation
