@@ -7,6 +7,7 @@ A Python 3  **pro**tein structure **fet**cher. Retrieves the cif or pdb files fr
 
 [![Building](https://github.com/alan-turing-insitute/profet/actions/workflows/python-package.yml/badge.svg)](https://github.com/alan-turing-insitute/profet/actions/workflows/python-package.yml)
 [![Publishing](https://github.com/alan-turing-insitute/profet/actions/workflows/python-publish.yml/badge.svg)](https://github.com/alan-turing-insitute/profet/actions/workflows/python-publish.yml)
+[![Documentation](https://github.com/alan-turing-insitute/profet/actions/workflows/sphinx.yml/badge.svg)](https://github.com/alan-turing-insitute/profet/actions/workflows/sphinx.yml)
 
 ### Dependencies
 
@@ -68,7 +69,12 @@ Lastly, downloads the protein with uniprod ID "P61316", in pdb format from the A
 
 For more detailed examples consult the following [Python notebook](./run_profet.ipynb).
 
+### Documentation
+
+You can find more documentation including a description of the python api [here](https://alan-turing-institute.github.io/profet/).
+
 ### Issues and Feature Requests
+
 If you run into an issue, or if you find a workaround for an existing issue, we would very much appreciate it if you could post your question or code as a [GitHub issue](https://github.com/alan-turing-institute/profet/issues). 
 
 ### Contributions
