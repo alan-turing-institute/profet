@@ -13,25 +13,35 @@ A Python 3  **pro**tein structure **fet**cher. Retrieves the cif or pdb files fr
 
 Please install the latest version of PyPDB using:
 
-`$ pip install pypdb`
+```sh
+pip install pypdb
+```
 
 or
 
-`$ pip install git+git://github.com/williamgilpin/pypdb`
+```sh
+pip install git+git://github.com/williamgilpin/pypdb
+```
 
 ### Installation
 
 Install `profet` using pip:
 
-`$ pip install profet`
+```sh
+pip install profet
+```
 
 To install the development version, which contains the latest features and fixes, install directly from GitHub using
 
-`$ pip install git+git://github.com/alan-turing-institute/profet`
+```sh
+pip install git+git://github.com/alan-turing-institute/profet
+```
 
 Test the installation, navigate to the root directory and run
 
-`$ pytest `
+```sh
+pytest
+```
 
 This code has been designed and tested for Python 3.
 
@@ -52,15 +62,17 @@ Run `search_history()` to see the search history of the fetcher.
 
 #### Example usage:
 
- ```
-Python3 
+```python
+import profet as pf
+fetcher = pf.Fetcher()
+fetcher.set_directory("/path/to/directory/folder")
+fetcher.get_file(uniprot_id = "P61316", filetype = "pdb", filesave = True, db = "alphafold")
 
-$ import profet as pf
-$ fetcher = pf.Fetcher()
-$ fetcher.set_directory("/path/to/directory/folder")
-$ fetcher.get_file(uniprot_id = "P61316", filetype = "pdb", filesave = True, db = "alphafold")
+fetcher.search_history()
+```
 
-$ fetcher.search_history()
+returns:
+```
 {'P61316': ['pdb', 'alphafold']}
 ```
 
