@@ -97,3 +97,5 @@ Finally, the `profet.Fetcher.search_history` function can be used to access the 
 ```
 
 The functionality can be tested using the `run_profet.ipynb` Jupyter notebook, available in the package repository.
+
+# References 
