@@ -5,9 +5,9 @@ A Python 3  **pro**tein structure **fet**cher. Retrieves the cif or pdb files fr
 [![PyPI version shields.io](https://img.shields.io/pypi/v/profet.svg)](https://pypi.python.org/pypi/profet/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/python-profet.svg)](https://pypi.python.org/pypi/profet/)
 
-[![Building](https://github.com/alan-turing-insitute/profet/actions/workflows/python-package.yml/badge.svg)](https://github.com/alan-turing-insitute/profet/actions/workflows/python-package.yml)
-[![Publishing](https://github.com/alan-turing-insitute/profet/actions/workflows/python-publish.yml/badge.svg)](https://github.com/alan-turing-insitute/profet/actions/workflows/python-publish.yml)
-[![Documentation](https://github.com/alan-turing-insitute/profet/actions/workflows/sphinx.yml/badge.svg)](https://github.com/alan-turing-insitute/profet/actions/workflows/sphinx.yml)
+[![Building](https://github.com/alan-turing-institute/profet/actions/workflows/python-package.yml/badge.svg)](https://github.com/alan-turing-institute/profet/actions/workflows/python-package.yml)
+[![Publishing](https://github.com/alan-turing-institute/profet/actions/workflows/python-publish.yml/badge.svg)](https://github.com/alan-turing-institute/profet/actions/workflows/python-publish.yml)
+[![Documentation](https://github.com/alan-turing-institute/profet/actions/workflows/sphinx.yml/badge.svg)](https://github.com/alan-turing-institute/profet/actions/workflows/sphinx.yml)
 
 ### Dependencies
 
