@@ -1,5 +1,5 @@
 ---
-title: '*profet*: A Python package to download PDBs from different sources'
+title: '*profet*: A Python package for fetching protein structures from multiple data sources'
 tags:
   - Python
   - protein structures
@@ -38,7 +38,7 @@ bibliography: paper.bib
 
 # Summary
 
-The *profet* (**pro**tein structure **fet**cher) python libary provides a simple and streamlined interface that makes it easy to download protein structures from various online databases. Since its founding in 1971, over 1 million experimentally determined macromolecular structures have been deposited and made freely available to all in the Protein Data Bank (PDB) archive [@pdb]. The availability of this wealth of experimental data has been pivotal in the development of new software in the field. Recently, the AlphaFold2 [@alphafold] team released over 200 million predicted macromolecular structures on their online platform. Being able to easily access these incredible open repositories of experimental and simulated data is crucial for accelerating scientific software development in structural biology. However, in practice, doing this can be cumbersome, as each database has their own manual download system, or individual python package. 
+The *profet* (**pro**tein structure **fet**cher) python library provides a simple and streamlined interface that makes it easy to download protein structures from various online databases. Since its founding in 1971, over 1 million experimentally determined macromolecular structures have been deposited and made freely available to all in the Protein Data Bank (PDB) archive [@pdb]. The availability of this wealth of experimental data has been pivotal in the development of new software in the field. Recently, the AlphaFold2 [@alphafold] team released over 200 million predicted macromolecular structures on their online platform. Being able to easily access these incredible open repositories of experimental and simulated data is crucial for accelerating scientific software development in structural biology. However, in practice, doing this can be cumbersome, as each database has their own manual download system, or individual python package. 
 
 With *profet*, users can conveniently download individual structures directly using python by simply specifying their Uniprot ID [@uniprot]. Users can specify which database they would like to use by default and if the structure is available from that source it will be downloaded. If the structure is not available from that source, *profet* will seek to download it from an alternative database. Typical applications that require the ability to download many structures on demand are protein matching algorithms for visual proteomics, such as [@cryolo] [@affinity], large scale models in molecular dynamics simulations [@mcguffee] [@bigsim], and electron microscopy simulations [@parakeet].
 
@@ -52,7 +52,7 @@ At the time of writing, the authors are not aware of any other tool that allows 
 
 # *profet* workflow example
  
-The *profet* library has a high-level python API that can be used to download entries from both the PDB and alphafold through a single unified object oriented interface. An example of how to access this functionality through the main protein fetcher class, `profet.Fetcher`, is shown in the following code snippet.
+The *profet* library has a high-level python API that can be used to download entries from both the PDB and AlphaFold through a single unified object oriented interface. An example of how to access this functionality through the main protein fetcher class, `profet.Fetcher`, is shown in the following code snippet.
 
 ```python=
 from profet import Fetcher
@@ -87,7 +87,9 @@ _audit_conform.dict_location   http://mmcif.pdb.org/dictionaries/ascii/mmcif_pdb
 #
 ```
 
-During initialisation, the default database can be specified in the constructor of the `profet.Fetcher` class. This should be a string containing either "pdb" for the PDB database or "alphafold" for the AlphaFold database. In the example, the PDB database was specified. After initialisation, the fetcher can then be used to download structures from the specified database. This can be done by using the `profet.Fetcher.get_file` method and by specifiying the `uniprot_id` of the protein of interest. In the example, an apoferritin model ("4v1w") is downloaded. If the entry does not exist, then an exception is raised.
+During initialisation, the default database can be specified in the constructor of the `profet.Fetcher` class. This should be a string containing either "pdb" for the PDB database or "alphafold" for the AlphaFold database. In the example, the PDB database was specified. After initialisation, the fetcher can then be used to download structures from the specified database. This can be done by using the `profet.Fetcher.get_file` method and by specifying the id of the protein of interest. In the example, an apoferritin model ("4v1w") is downloaded, using the PDB id. 
+
+The universal identification value that works across platforms is the Uniprot ID. This is due to alphafold categorising structures only by their unique UniprotID, while PDB has a correspondent ID, as the same molecule can have different experimental entries. If the entry does not exist in any of the databases, then an exception is raised.
 
 When downloading the protein structure, the `filetype` keyword can also be specified to choose between "cif" or "pdb" file if available. If the requested file type is not available then *profet* will attempt to download whichever file type is available. For example, if "cif" is requested but only "pdb" is available, the pdb file will be downloaded. If no file type is specified then the pdb file will be download if present, otherwise the cif file will be downloaded. Additionally, the `filesave` boolean flag can be used to specify whether or not the protein structure should be saved automatically to disk. By default this is set to False, in which case the returned filename is `None` and only the filedata is returned as a binary string. If `filesave` is `True`, then the file is saved into the current working directory. 
 
