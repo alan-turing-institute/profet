@@ -103,6 +103,6 @@ The functionality can be tested using the `run_profet.ipynb` Jupyter notebook, a
 
 # Acknowledgements
 
-The Rosalind Franklin Institute is an EPSRC core funded Institute. James Parkhurst is funded by the Wellcome Trust through the Electrifying Life Science grant. This work was supported by Wave 1 of The UKRI Strategic Priorities Fund under the EPSRC Grant EP/W006022/1, particularly the “AI for Science” theme within that grant & The Alan Turing Institute.
+The Rosalind Franklin Institute is an EPSRC core funded Institute. James Parkhurst is funded by the Wellcome Trust through the Electrifying Life Science grant. Nikolai Juraschko is funded by EPSRC grant number EP/V521899/1. This work was supported by Wave 1 of The UKRI Strategic Priorities Fund under the EPSRC Grant EP/W006022/1, particularly the “AI for Science” theme within that grant & The Alan Turing Institute.
 
 # References 
