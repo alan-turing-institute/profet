@@ -101,4 +101,8 @@ Finally, the `profet.Fetcher.search_history` function can be used to access the 
 
 The functionality can be tested using the `run_profet.ipynb` Jupyter notebook, available in the package repository.
 
+# Acknowledgements
+
+The Rosalind Franklin Institute is an EPSRC core funded Institute. James Parkhurst is funded by the Wellcome Trust through the Electrifying Life Science grant. This work was supported by Wave 1 of The UKRI Strategic Priorities Fund under the EPSRC Grant EP/W006022/1, particularly the “AI for Science” theme within that grant & The Alan Turing Institute.
+
 # References 
