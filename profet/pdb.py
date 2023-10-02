@@ -80,7 +80,7 @@ class PDB_DB:
             )
 
         # Update the filename
-        filedir = filedir + "." + filetype
+        filedir = filedir + "_" + pdb_id + "." + filetype
 
         # Optionally save the data to disk
         if filesave:
