@@ -41,8 +41,6 @@ class PDB_DB:
         self,
         uniprot_id: str,
         filetype: str = "pdb",
-        filesave: bool = False,
-        filedir: str = "default",
     ) -> tuple:
         """
         Returns pdb/cif as strings, saves to file if requested
@@ -50,7 +48,6 @@ class PDB_DB:
         Args:
             uniprot_id: ID from Uniprot
             filetype: File type to be retrieved: cif, pdb
-            filesave: Option to save into a file
             filedir: The directory to save the data
 
         Returns:
@@ -79,12 +76,5 @@ class PDB_DB:
                 pdb_id, PDBFileType(filetype), compression=True
             )
 
-        # Update the filename
-        filedir = filedir + "." + filetype
-
-        # Optionally save the data to disk
-        if filesave:
-            open(filedir, "wb").write(filedata)
-
         # Return the filename and file contents
-        return filedir, filedata
+        return filetype, filedata
