@@ -12,9 +12,7 @@ class PDBFileCache(object):
         """
         Initialise the cache object with the directory
 
-        If directory is None then the PDB_CACHE environment variable is
-        checked. If the environment variable is empty then the cache is set to
-        ~/.cache/pdb
+        If directory is None then the cache is set to ~/.cache/pdb
 
         Args:
             directory: The cache directory
