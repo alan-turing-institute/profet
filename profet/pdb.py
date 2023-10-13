@@ -76,5 +76,11 @@ class PDB_DB:
                 pdb_id, PDBFileType(filetype), compression=True
             )
 
-        # Return the filename and file contents
-        return filetype, filedata
+        # If pdb is not the same then add the pdb id to the uniprot id as the identifier
+        if pdb_id.lower() != uniprot_id.lower():
+            identifier = uniprot_id + "_" + pdb_id
+        else:
+            identifier = uniprot_id
+
+        # Return the identifier, file type and file contents
+        return identifier, filetype, filedata

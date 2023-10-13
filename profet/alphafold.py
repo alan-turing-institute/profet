@@ -140,4 +140,4 @@ class Alphafold_DB:
             file = requests.get(url)
 
         # Return the filename and file contents
-        return filetype, file.text
+        return uniprot_id, filetype, file.text

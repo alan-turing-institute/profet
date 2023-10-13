@@ -59,20 +59,9 @@ class Fetcher:
             Tuple containing the filename and file from the database
 
         """
-        if db == "pdb":
-            filetype, filedata = self.pdb.get_pdb(
-                prot_id,
-                filetype=filetype,
-            )
-        elif db == "alphafold":
-            filetype, filedata = self.alpha.get_pdb(
-                prot_id,
-                filetype=filetype,
-            )
-        else:
-            raise RuntimeError("Unknown db: %s" % db)
-
-        return filetype, filedata
+        return {"pdb": self.pdb.get_pdb, "alphafold": self.alpha.get_pdb}[db](
+            prot_id, filetype=filetype
+        )
 
     def get_file(
         self,
@@ -112,7 +101,7 @@ class Fetcher:
             if len(self.search_results[uniprot_id]):
                 if db in self.search_results[uniprot_id]:
                     print("Structure available on defaulted database: " + db)
-                    filetype, filedata = self.file_from_db(
+                    identifier, filetype, filedata = self.file_from_db(
                         prot_id=uniprot_id,
                         filetype=filetype,
                         db=db,
@@ -123,7 +112,7 @@ class Fetcher:
                             "Structure available in alternative database: "
                             + item
                         )
-                        filetype, filedata = self.file_from_db(
+                        identifier, filetype, filedata = self.file_from_db(
                             prot_id=uniprot_id,
                             filetype=filetype,
                             db=item,
@@ -135,8 +124,8 @@ class Fetcher:
 
             # Optionally save the data
             if filesave:
-                cache[uniprot_id] = (filetype, filedata)
-                filename = cache[uniprot_id]
+                cache[identifier] = (filetype, filedata)
+                filename = cache[identifier]
             else:
                 filename = None
 
