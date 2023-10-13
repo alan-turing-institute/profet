@@ -34,20 +34,20 @@ class PDBFileCache(object):
         if not os.path.exists(self.directory):
             os.mkdir(self.directory)
 
-    def path(self, uniprot_id: str, filetype: str = ".pdb") -> str:
+    def path(self, uniprot_id: str, filetype: str = "pdb") -> str:
         """
         Get the proposed path
 
         Args:
             uniprot_id: The uniprot id
-            filetype: Either .pdb or .cif
+            filetype: Either pdb or cif
 
         Returns:
             The absolute path
 
         """
-        assert filetype in [".pdb", ".cif"]
-        return os.path.join(self.directory, uniprot_id.lower()) + filetype
+        assert filetype in ["pdb", "cif"]
+        return os.path.join(self.directory, uniprot_id.lower()) + "." + filetype
 
     def find(self, uniprot_id: str) -> list:
         """
@@ -63,7 +63,7 @@ class PDBFileCache(object):
         return [
             filename
             for filename in [
-                self.path(uniprot_id, filetype) for filetype in [".pdb", ".cif"]
+                self.path(uniprot_id, filetype) for filetype in ["pdb", "cif"]
             ]
             if os.path.exists(filename)
         ]
@@ -109,8 +109,14 @@ class PDBFileCache(object):
         # Get the item components
         filetype, filedata = item
 
+        # Bytes or string
+        if isinstance(filedata, (bytes, bytearray)):
+            mode = "wb"
+        else:
+            mode = "w"
+
         # Write the file
-        with open(self.path(uniprot_id, filetype), "w") as outfile:
+        with open(self.path(uniprot_id, filetype), mode) as outfile:
             outfile.write(filedata)
 
     def items(self):
