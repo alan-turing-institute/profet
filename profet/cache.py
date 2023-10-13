@@ -1,4 +1,3 @@
-from typing import Optional
 import os
 
 
@@ -79,7 +78,7 @@ class PDBFileCache(object):
         """
         return len(self.find(uniprot_id)) > 0
 
-    def __getitem__(self, uniprot_id: str) -> Optional[tuple]:
+    def __getitem__(self, uniprot_id: str) -> str:
         """
         Get the full path to the item
 
@@ -91,7 +90,7 @@ class PDBFileCache(object):
 
         """
         if uniprot_id not in self:
-            return None
+            raise RuntimeError("%s not in cache" % uniprot_id)
         return self.find(uniprot_id)[0]
 
     def __setitem__(self, uniprot_id: str, item: tuple):
