@@ -25,8 +25,8 @@ class PDBFileCache(object):
         self.directory = os.path.abspath(
             directory
             if directory is not None
-            else os.path.expanduser(
-                os.getenv("PDB_CACHE", os.path.join("~", ".cache", "pdb"))
+            else os.path.abspath(
+                os.path.expanduser(os.path.join("~", ".cache", "pdb"))
             )
         )
 
