@@ -125,4 +125,4 @@ class PDBFileCache(object):
         for filename in os.listdir(self.directory):
             if filename.endswith(".cif") or filename.endswith(".pdb"):
                 uniprot_id, filetype = os.path.splitext(filename)
-                yield uniprot_id, self.path(uniprot_id, filetype)
+                yield uniprot_id, self.path(uniprot_id, filetype[1:])
