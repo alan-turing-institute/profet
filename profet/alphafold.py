@@ -109,8 +109,6 @@ class Alphafold_DB:
         self,
         uniprot_id: str,
         filetype: str = "pdb",
-        filesave: bool = False,
-        filedir: str = "default",
     ) -> tuple:
         """
         Returns pdb/cif as strings, saves to file if requested.
@@ -118,7 +116,6 @@ class Alphafold_DB:
         Args:
             uniprot_id: ID from Uniprot
             filetype: File type to be retrieved: cif, pdb
-            filesave: Option to save into a file
             filedir: The directory to save the data
 
         Returns:
@@ -142,12 +139,5 @@ class Alphafold_DB:
             url = self.get_file_url(uniprot_id, filetype)
             file = requests.get(url)
 
-        # Update the filename
-        filedir = filedir + "." + filetype
-
-        # Optionally save the data to disk
-        if filesave:
-            open(filedir, "w").write(file.text)
-
         # Return the filename and file contents
-        return filedir, file.text
+        return uniprot_id, filetype, file.text
