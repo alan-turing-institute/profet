@@ -1,10 +1,12 @@
 import os.path
 import pytest
 import profet
+import profet.command_line
 from profet import Fetcher
 from profet import alphafold
 from profet import pdb
 from collections import defaultdict
+from contextlib import redirect_stdout
 
 ONLY_ALPHAFOLD = "F4HvG8"
 ONLY_PDB = "7U6Q"
@@ -79,9 +81,9 @@ def test_cache(tmpdir):
     filename = cache.path("4V5D", "pdb")
     assert filename == os.path.join(tmpdir, "4v5d.pdb")
 
-    cache["4V5D"] = ("cif", "4V5D cif data")
-    cache["1U2P"] = ("pdb", "1U2P pdb data")
-    cache["1U2P"] = ("cif", "1U2P cif data")
+    cache["4V5D"] = ("pdb", "cif", "4V5D cif data")
+    cache["1U2P"] = ("alphafold", "pdb", "1U2P pdb data")
+    cache["1U2P"] = ("pdb", "cif", "1U2P cif data")
 
     assert len(cache.find("2J3K")) == 0
     assert len(cache.find("4V5D")) == 1
@@ -115,3 +117,18 @@ def test_cache(tmpdir):
     assert os.path.join(tmpdir, "4v5d.cif") in items["4v5d"]
     assert os.path.join(tmpdir, "1u2p.cif") in items["1u2p"]
     assert os.path.join(tmpdir, "1u2p.pdb") in items["1u2p"]
+
+
+@pytest.mark.parametrize("test_id", get_test_ids())
+def test_command_line_main(tmpdir, test_id):
+    source, pdb_id = test_id
+
+    with open("tmp.out", "w") as outfile:
+        with redirect_stdout(outfile):
+            profet.command_line.main(
+                [pdb_id, "--save_directory", str(tmpdir), "--main_db", source]
+            )
+    with open("tmp.out") as infile:
+        lines = list(infile.readlines())
+        _, filename, _ = lines[-1].split("'")
+        assert os.path.exists(filename)

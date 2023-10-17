@@ -9,6 +9,11 @@ def main():
     setup(
         setup_requires=["setuptools_scm"],
         use_scm_version={"write_to": "profet/_version.py"},
+        entry_points={
+            "console_scripts": [
+                "profet=profet.command_line:main",
+            ]
+        },
     )
 
 

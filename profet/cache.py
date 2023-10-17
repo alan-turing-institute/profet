@@ -1,3 +1,4 @@
+import json
 import os
 
 
@@ -30,6 +31,9 @@ class PDBFileCache(object):
         # Create the directory if it doesn't exist
         if not os.path.exists(self.directory):
             os.mkdir(self.directory)
+
+        # The manifest filename
+        self.manifest = os.path.join(self.directory, "manifest.txt")
 
     def path(self, uniprot_id: str, filetype: str = "pdb") -> str:
         """
@@ -99,12 +103,15 @@ class PDBFileCache(object):
 
         Args:
             uniprot_id: The uniprot id
-            item: (The file type, The file data)
+            item: (The file origin, The file type, The file data)
 
         """
 
         # Get the item components
-        filetype, filedata = item
+        fileorigin, filetype, filedata = item
+
+        # Get the filename
+        filename = self.path(uniprot_id, filetype)
 
         # Bytes or string
         if isinstance(filedata, (bytes, bytearray)):
@@ -113,8 +120,11 @@ class PDBFileCache(object):
             mode = "w"
 
         # Write the file
-        with open(self.path(uniprot_id, filetype), mode) as outfile:
+        with open(filename, mode) as outfile:
             outfile.write(filedata)
+
+        # Update the manifest
+        self._update_manifest(uniprot_id, fileorigin, filetype, filename)
 
     def items(self):
         """
@@ -125,3 +135,35 @@ class PDBFileCache(object):
             if filename.endswith(".cif") or filename.endswith(".pdb"):
                 uniprot_id, filetype = os.path.splitext(filename)
                 yield uniprot_id, self.path(uniprot_id, filetype[1:])
+
+    def _update_manifest(
+        self, uniprot_id: str, fileorigin: str, filetype: str, filename: str
+    ):
+        """
+        Update the manifest file
+
+        Args:
+            uniprot_id: The uniprot id
+            fileorigin: The file origin
+            filetype: The file type
+            filename: The filename
+
+        """
+
+        # Read the current manifest
+        if os.path.exists(self.manifest):
+            with open(self.manifest) as infile:
+                data = json.load(infile)
+        else:
+            data = {}
+
+        # Update the data
+        data[uniprot_id] = {
+            "fileorigin": fileorigin,
+            "filetype": filetype,
+            "filename": filename,
+        }
+
+        # Write the data to the file
+        with open(self.manifest, "w") as outfile:
+            json.dump(data, outfile)
