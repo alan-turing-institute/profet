@@ -81,9 +81,9 @@ def test_cache(tmpdir):
     filename = cache.path("4V5D", "pdb")
     assert filename == os.path.join(tmpdir, "4v5d.pdb")
 
-    cache["4V5D"] = ("cif", "4V5D cif data")
-    cache["1U2P"] = ("pdb", "1U2P pdb data")
-    cache["1U2P"] = ("cif", "1U2P cif data")
+    cache["4V5D"] = ("pdb", "cif", "4V5D cif data")
+    cache["1U2P"] = ("alphafold", "pdb", "1U2P pdb data")
+    cache["1U2P"] = ("pdb", "cif", "1U2P cif data")
 
     assert len(cache.find("2J3K")) == 0
     assert len(cache.find("4V5D")) == 1

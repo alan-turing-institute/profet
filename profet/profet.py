@@ -106,6 +106,7 @@ class Fetcher:
                         filetype=filetype,
                         db=db,
                     )
+                    fileorigin = db
                 else:
                     for item in self.search_results[uniprot_id]:
                         print(
@@ -117,6 +118,7 @@ class Fetcher:
                             filetype=filetype,
                             db=item,
                         )
+                        fileorigin = db
             else:
                 raise RuntimeError(
                     "Structure %s not available on any database" % uniprot_id
@@ -124,7 +126,7 @@ class Fetcher:
 
             # Optionally save the data
             if filesave:
-                cache[identifier] = (filetype, filedata)
+                cache[identifier] = (fileorigin, filetype, filedata)
                 filename = cache[identifier]
             else:
                 filename = None
