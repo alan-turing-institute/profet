@@ -172,3 +172,28 @@ class Fetcher:
             self.type = db
         else:
             raise RuntimeError("Database not available: %s" % db)
+
+
+    def cleave_off_signal_peptides(
+            self,
+            uniprot_id,
+    ):
+        """
+        Deletes the signal peptides from the structure according to UniProt.
+
+        Args:
+            uniprot_id: UniProt ID of the structure.
+
+        """
+
+        if uniprot_id in cache:
+            filename = cache[uniprot_id]
+            signal_peptides = Cleaver.signal_residuenumbers_requester(uniprot_id)
+            if filename.lower().endswith('.pdb'):
+                new_name = Cleaver.anamder_pdb(filename, signal_peptides)
+                Cleaver.remove_signal_peptide_pdb(filename, signal_peptides, new_name)
+            elif filename.lower().endswith('.cif'):
+                new_name = Cleaver.anamder_pdb(filename, signal_peptides)
+                Cleaver.remove_signal_peptide_cif(filename, signal_peptides, new_name)
+            else:
+                print("Unsupported file format. Please download a PDB or CIF file using profet.")
