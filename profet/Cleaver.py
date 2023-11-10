@@ -149,26 +149,4 @@ class Cleaver:
         new_name = f"{os.path.splitext(base_name)[0]}_cleaved_{signal_info}.cif"
 
         return new_name
-
-
-
-if __name__ == "__main__":
-    # Define the UniProt URL for the specific protein
-    uniprot_id = "P0A855"  # "P33136"
-    signal_peptides_list = [(1, 10), (20, 30)]  # Replace with your actual signal peptide positions
-    Cleaver = Cleaver()
-    signal_peptides = Cleaver.signal_residuenumbers_requester(uniprot_id)
-
-    # Specify the input PDB or CIF file and the desired output file
-    pdb_or_cif_file = "P0A855.cif"  # Replace with your input PDB or CIF file
-    output_filename = "P0A855_cleaved1_21.cif"  # Replace with the desired output file name
-
-    if pdb_or_cif_file.lower().endswith('.pdb'):
-        Cleaver.remove_signal_peptide_pdb(pdb_or_cif_file, signal_peptides, output_filename)
-        result = Cleaver.anamder_pdb(pdb_or_cif_file, signal_peptides_list)
-    elif pdb_or_cif_file.lower().endswith('.cif'):
-        Cleaver.remove_signal_peptide_cif(pdb_or_cif_file, signal_peptides, output_filename)
-        result = Cleaver.anamder_cif(pdb_or_cif_file, signal_peptides_list)
-    else:
-        print("Unsupported file format. Please provide a PDB or CIF file.")
-    print(result)
+            
