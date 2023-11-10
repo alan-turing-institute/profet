@@ -119,7 +119,10 @@ class Cleaver:
         # Extract the base filename
         base_name = os.path.basename(input_file)
         # Extract signal peptide information
-        signal_info = "_".join([f"{start}to{end}" for start, end in signal_peptides])
+        if signal_peptides != []:
+            signal_info = "_".join([f"{start}to{end}" for start, end in signal_peptides])
+        else:
+            signal_info = "none"
         # Creating the new filename
         new_name = f"{os.path.splitext(base_name)[0]}_cleaved_{signal_info}.pdb"
 
@@ -144,9 +147,11 @@ class Cleaver:
         # Extract the base filename
         base_name = os.path.basename(input_file)
         # Extract signal peptide information
-        signal_info = "_".join([f"{start}to{end}" for start, end in signal_peptides])
+        if signal_peptides != []:
+            signal_info = "_".join([f"{start}to{end}" for start, end in signal_peptides])
+        else:
+            signal_info = "none"
         # Mend the new filename
         new_name = f"{os.path.splitext(base_name)[0]}_cleaved_{signal_info}.cif"
 
         return new_name
-            
