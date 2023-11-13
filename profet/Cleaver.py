@@ -2,6 +2,7 @@ import requests
 import xml.etree.ElementTree as ET
 import os
 
+
 class Cleaver:
     """
     Class, identifying signal peptides based on UniProt and cleaving pdb/cif file to remove signal peptides of the
@@ -35,9 +36,11 @@ class Cleaver:
         # Find the signal peptide starting and end positions
         for child in root:
             for grandchild in child:
-                if grandchild.attrib.get('type') == 'signal peptide':
-                    start_position = int(grandchild[0][0].attrib.get('position'))
-                    end_position = int(grandchild[0][1].attrib.get('position'))
+                if grandchild.attrib.get("type") == "signal peptide":
+                    start_position = int(
+                        grandchild[0][0].attrib.get("position")
+                    )
+                    end_position = int(grandchild[0][1].attrib.get("position"))
                     signal_peptides.append((start_position, end_position))
         return signal_peptides
 
@@ -46,10 +49,10 @@ class Cleaver:
         pdb_file: str,
         signal_peptides: list,
         output_filename: str,
-        ):
+    ):
         """
         Load the pdb file and deletes the signal peptides. Save as new cleaved pdb file.
-    
+
         Args:
             pdb_file: Path to the pdb input file
             signal_peptides: List of signal peptide start and ending positions pairs
@@ -58,13 +61,19 @@ class Cleaver:
             None
         """
 
-        with open(pdb_file, 'r') as input_pdb:
-            with open(output_filename, 'w') as output_pdb:
+        with open(pdb_file, "r") as input_pdb:
+            with open(output_filename, "w") as output_pdb:
                 for line in input_pdb:
-                    if line.startswith('ATOM'):
-                        residue_position = int(line[22:26].strip()) # 22-26 to check for amino acid number/ residue number
+                    if line.startswith("ATOM"):
+                        residue_position = int(
+                            line[22:26].strip()
+                        )  # 22-26 to check for amino acid number/ residue number
                         for start_position, end_position in signal_peptides:
-                            if start_position <= residue_position <= end_position:
+                            if (
+                                start_position
+                                <= residue_position
+                                <= end_position
+                            ):
                                 break
                         else:
                             output_pdb.write(line)
@@ -76,7 +85,7 @@ class Cleaver:
         input_file: str,
         signal_peptides: list,
         output_filename: str,
-        ):
+    ):
         """
         Load the cif file and deletes the signal peptides. Save as new cleaved cif file.
 
@@ -88,9 +97,11 @@ class Cleaver:
             None
         """
 
-        with open(input_file, 'r') as infile, open(output_filename, 'w') as outfile:
+        with open(input_file, "r") as infile, open(
+            output_filename, "w"
+        ) as outfile:
             for line in infile:
-                if line.startswith('ATOM'):
+                if line.startswith("ATOM"):
                     residue_number = int(line[26:30].strip())
                     for start_position, end_position in signal_peptides:
                         if start_position <= residue_number <= end_position:
@@ -104,7 +115,7 @@ class Cleaver:
         self,
         input_file: str,
         signal_peptides: list,
-        ) -> str:
+    ) -> str:
         """
         From the input pdb dir\filename, amends it into an output filename a la filename_cleaved_xz_etc.pdb.
         Where xz are the beginning and end positions of the signal peptide.
@@ -120,7 +131,9 @@ class Cleaver:
         base_name = os.path.basename(input_file)
         # Extract signal peptide information
         if signal_peptides != []:
-            signal_info = "_".join([f"{start}to{end}" for start, end in signal_peptides])
+            signal_info = "_".join(
+                [f"{start}to{end}" for start, end in signal_peptides]
+            )
         else:
             signal_info = "none"
         # Creating the new filename
@@ -132,7 +145,7 @@ class Cleaver:
         self,
         input_file: str,
         signal_peptides: list,
-        ) -> str:
+    ) -> str:
         """
         From the input cif dir\filename, amends it into an output filename a la filename_cleaved_xz_etc.cif.
         Where xz are the beginning and end positions of the signal peptide.
@@ -148,7 +161,9 @@ class Cleaver:
         base_name = os.path.basename(input_file)
         # Extract signal peptide information
         if signal_peptides != []:
-            signal_info = "_".join([f"{start}to{end}" for start, end in signal_peptides])
+            signal_info = "_".join(
+                [f"{start}to{end}" for start, end in signal_peptides]
+            )
         else:
             signal_info = "none"
         # Mend the new filename
