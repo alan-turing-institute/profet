@@ -37,11 +37,21 @@ class Cleaver:
         for child in root:
             for grandchild in child:
                 if grandchild.attrib.get("type") == "signal peptide":
-                    start_position = int(
+                    if (
                         grandchild[0][0].attrib.get("position")
-                    )
-                    end_position = int(grandchild[0][1].attrib.get("position"))
-                    signal_peptides.append((start_position, end_position))
+                        and grandchild[0][1].attrib.get("position") is not None
+                    ):
+                        start_position = int(
+                            str(grandchild[0][0].attrib.get("position"))
+                        )
+                        end_position = int(
+                            str(grandchild[0][1].attrib.get("position"))
+                        )
+                        signal_peptides.append((start_position, end_position))
+                    else:
+                        print(uniprot_id + "has no signal peptide")
+                else:
+                    None
         return signal_peptides
 
     def remove_signal_peptide_pdb(
