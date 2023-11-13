@@ -185,6 +185,8 @@ class Fetcher:
             uniprot_id: UniProt ID of the structure.
 
         """
+        # Get the PDB cache
+        cache = PDBFileCache(directory=self.save_directory)
 
         if uniprot_id in cache:
             filename = cache[uniprot_id]
