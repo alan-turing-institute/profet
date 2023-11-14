@@ -176,7 +176,7 @@ class Fetcher:
 
     def cleave_off_signal_peptides(
         self,
-        uniprot_id,
+        uniprot_id: str,
     ):
         """
         Deletes the signal peptides from the structure according to UniProt.
