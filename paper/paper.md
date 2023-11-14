@@ -50,7 +50,7 @@ While there are existing methods available to access and download files from the
 At the time of writing, the authors are not aware of any other tool that allows a user to download protein structures from multiple databases in a unified interface. Commonly, structures are downloaded directly from the respective portal interfaces. Furthermore, for batch downloads, it is necessary to have scripting skills [@batch]. With computational power increasing and simulation sizes reaching hundreds-of-millions of atoms [@singharoy], it is becoming increasingly important to automate the pipeline of PDB structure access, which *profet* provides a portal to. Furthermore, *profet* is scalable and has the ability to add other databases as search options (such as CATHdb[@cathdb]) by providing a template for accessing database APIs.
 
 
-# *profet* workflow example
+# *profet* python example
  
 The *profet* library has a high-level python API that can be used to download entries from both the PDB and AlphaFold through a single unified object oriented interface. An example of how to access this functionality through the main protein fetcher class, `profet.Fetcher`, is shown in the following code snippet.
 
@@ -100,6 +100,19 @@ Finally, the `profet.Fetcher.search_history` function can be used to access the 
 ```
 
 The functionality can be tested using the `run_profet.ipynb` Jupyter notebook, available in the package repository.
+
+# *profet* command line interface example
+ 
+The *profet* library also has a command line interface that mirrors the python API and which can be used to download entries from both the PDB and AlphaFold. An example of how to use the profet command line program is shown in the following code snippet.
+
+```bash
+profet 4v1w \
+  --filetype=pdb \
+  --main_db=pdb \
+  --save_directory="~/.pdb"
+```
+
+In this example, the entry "4V1W" is to be downloaded from the PDB database as a .pdb file. The file will be cached in the "~/.pdb" directory for future use.
 
 # Acknowledgements
 
