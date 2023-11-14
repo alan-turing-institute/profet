@@ -3,11 +3,11 @@ A Python 3  **pro**tein structure **fet**cher. Retrieves the cif or pdb files fr
 
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
 [![PyPI version shields.io](https://img.shields.io/pypi/v/profet.svg)](https://pypi.python.org/pypi/profet/)
-[![PyPI pyversions](https://img.shields.io/pypi/pyversions/python-profet.svg)](https://pypi.python.org/pypi/profet/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/profet.svg)](https://pypi.python.org/pypi/profet/)
 
-[![Building](https://github.com/alan-turing-insitute/profet/actions/workflows/python-package.yml/badge.svg)](https://github.com/alan-turing-insitute/profet/actions/workflows/python-package.yml)
-[![Publishing](https://github.com/alan-turing-insitute/profet/actions/workflows/python-publish.yml/badge.svg)](https://github.com/alan-turing-insitute/profet/actions/workflows/python-publish.yml)
-[![Documentation](https://github.com/alan-turing-insitute/profet/actions/workflows/sphinx.yml/badge.svg)](https://github.com/alan-turing-insitute/profet/actions/workflows/sphinx.yml)
+[![Building](https://github.com/alan-turing-institute/profet/actions/workflows/python-package.yml/badge.svg)](https://github.com/alan-turing-institute/profet/actions/workflows/python-package.yml)
+[![Publishing](https://github.com/alan-turing-institute/profet/actions/workflows/python-publish.yml/badge.svg)](https://github.com/alan-turing-institute/profet/actions/workflows/python-publish.yml)
+[![Documentation](https://github.com/alan-turing-institute/profet/actions/workflows/sphinx.yml/badge.svg)](https://github.com/alan-turing-institute/profet/actions/workflows/sphinx.yml)
 
 ### Dependencies
 
@@ -52,7 +52,7 @@ This package can be used to retrieve the available protein structure from any Un
 The `Fetcher` class can search the IDs in both PDB and Alphafold, and saves the search results in a dictionary.
 
 `get_file` returns the structure corresponding to `uniprot_id` in the defined `filetype:` (default as `'pdb'`, option as `'cif'`), searching first in the defaulted database `db` (default as `'pdb'`, option as `'alphafold'`).
-The files can be saved to a local file with `filesave`.
+The files can be saved to a local file with `filesave`: the files are saved as `uniprotID.<filetype>`, except when the files are fetched from PDB and, in that case, are saved as `uniprotID_pdbID.<filetype>`.
 
 `set_default_db` changes the default database into the given one between `'pdb'` and `'alphafold'`.
 

@@ -1,9 +1,12 @@
 import os.path
 import pytest
 import profet
+import profet.command_line
 from profet import Fetcher
 from profet import alphafold
 from profet import pdb
+from collections import defaultdict
+from contextlib import redirect_stdout
 
 ONLY_ALPHAFOLD = "F4HvG8"
 ONLY_PDB = "7U6Q"
@@ -67,3 +70,65 @@ def test_fetcher_get_file(tmpdir, test_id):
     fetcher.set_directory(str(tmpdir))
     filename, contents = fetcher.get_file(pdb_id, filesave=True)
     assert os.path.exists(filename)
+
+
+def test_cache(tmpdir):
+    cache = profet.cache.PDBFileCache(directory=tmpdir)
+
+    filename = cache.path("4V5D", "cif")
+    assert filename == os.path.join(tmpdir, "4v5d.cif")
+
+    filename = cache.path("4V5D", "pdb")
+    assert filename == os.path.join(tmpdir, "4v5d.pdb")
+
+    cache["4V5D"] = ("pdb", "cif", "4V5D cif data")
+    cache["1U2P"] = ("alphafold", "pdb", "1U2P pdb data")
+    cache["1U2P"] = ("pdb", "cif", "1U2P cif data")
+
+    assert len(cache.find("2J3K")) == 0
+    assert len(cache.find("4V5D")) == 1
+    assert len(cache.find("1U2P")) == 2
+
+    assert "2J3K" not in cache
+    assert "4v5d" in cache
+    assert "1u2p" in cache
+
+    filename = cache["4v5d"]
+    assert filename == os.path.join(tmpdir, "4v5d.cif")
+
+    with open(filename) as infile:
+        text = infile.read()
+        assert text == "4V5D cif data"
+
+    filename = cache["1u2p"]
+    assert filename == os.path.join(tmpdir, "1u2p.pdb")
+
+    with open(filename) as infile:
+        text = infile.read()
+        assert text == "1U2P pdb data"
+
+    items = defaultdict(list)
+    for identifier, filename in cache.items():
+        items[identifier].append(filename)
+
+    assert len(items) == 2
+    assert len(items["4v5d"]) == 1
+    assert len(items["1u2p"]) == 2
+    assert os.path.join(tmpdir, "4v5d.cif") in items["4v5d"]
+    assert os.path.join(tmpdir, "1u2p.cif") in items["1u2p"]
+    assert os.path.join(tmpdir, "1u2p.pdb") in items["1u2p"]
+
+
+@pytest.mark.parametrize("test_id", get_test_ids())
+def test_command_line_main(tmpdir, test_id):
+    source, pdb_id = test_id
+
+    with open("tmp.out", "w") as outfile:
+        with redirect_stdout(outfile):
+            profet.command_line.main(
+                [pdb_id, "--save_directory", str(tmpdir), "--main_db", source]
+            )
+    with open("tmp.out") as infile:
+        lines = list(infile.readlines())
+        _, filename, _ = lines[-1].split("'")
+        assert os.path.exists(filename)

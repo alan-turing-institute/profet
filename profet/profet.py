@@ -1,5 +1,7 @@
 from .alphafold import Alphafold_DB
 from .pdb import PDB_DB
+from .cache import PDBFileCache
+import os
 
 
 class Fetcher:
@@ -9,7 +11,7 @@ class Fetcher:
 
     """
 
-    def __init__(self, main_db: str = "pdb"):
+    def __init__(self, main_db: str = "pdb", save_directory: str = None):
         """
         Initialise the fetcher
 
@@ -18,7 +20,7 @@ class Fetcher:
         self.pdb = PDB_DB()
         self.alpha = Alphafold_DB()
         self.search_results = {}  # type: ignore
-        self.save_directory = ""
+        self.save_directory = save_directory
 
     def check_db(self, uniprot_id: str) -> list:
         """
@@ -43,7 +45,6 @@ class Fetcher:
         self,
         prot_id: str,
         filetype: str = "pdb",
-        filesave: bool = False,
         db: str = "pdb",
     ) -> tuple:
         """
@@ -52,32 +53,15 @@ class Fetcher:
         Args:
             uniprot_id: ID from Uniprot.
             filetype: File type to be retrieved: cif, pdb.
-            filesave: Option to save into a file.
             db: database from which to retrieve the file.
 
         Returns:
             Tuple containing the filename and file from the database
 
         """
-        save_dir = self.save_directory + prot_id
-        if db == "pdb":
-            filename, filedata = self.pdb.get_pdb(
-                prot_id,
-                filetype=filetype,
-                filesave=filesave,
-                filedir=save_dir,
-            )
-        elif db == "alphafold":
-            filename, filedata = self.alpha.get_pdb(
-                prot_id,
-                filetype=filetype,
-                filesave=filesave,
-                filedir=save_dir,
-            )
-        else:
-            raise RuntimeError("Unknown db: %s" % db)
-
-        return filename, filedata
+        return {"pdb": self.pdb.get_pdb, "alphafold": self.alpha.get_pdb}[db](
+            prot_id, filetype=filetype
+        )
 
     def get_file(
         self,
@@ -102,31 +86,50 @@ class Fetcher:
             2. File from the database, or None if it is not available in any database.
 
         """
-        self.search_results[uniprot_id] = self.check_db(uniprot_id)
-        if len(self.search_results[uniprot_id]):
-            if db in self.search_results[uniprot_id]:
-                print("Structure available on defaulted database: " + db)
-                filename, filedata = self.file_from_db(
-                    prot_id=uniprot_id,
-                    filetype=filetype,
-                    filesave=filesave,
-                    db=db,
-                )
-            else:
-                for item in self.search_results[uniprot_id]:
-                    print(
-                        "Structure available in alternative database: " + item
-                    )
-                    filename, filedata = self.file_from_db(
+
+        # Get the PDB cache
+        cache = PDBFileCache(directory=self.save_directory)
+
+        # If the file is already downloaded then use that, otherwise search in
+        # the PDB or alphafold databases
+        if uniprot_id in cache:
+            filename = cache[uniprot_id]
+            with open(filename) as infile:
+                filedata = infile.read()
+        else:
+            self.search_results[uniprot_id] = self.check_db(uniprot_id)
+            if len(self.search_results[uniprot_id]):
+                if db in self.search_results[uniprot_id]:
+                    print("Structure available on defaulted database: " + db)
+                    identifier, filetype, filedata = self.file_from_db(
                         prot_id=uniprot_id,
                         filetype=filetype,
-                        filesave=filesave,
-                        db=item,
+                        db=db,
                     )
-        else:
-            raise RuntimeError(
-                "Structure %s not available on any database" % uniprot_id
-            )
+                    fileorigin = db
+                else:
+                    for item in self.search_results[uniprot_id]:
+                        print(
+                            "Structure available in alternative database: "
+                            + item
+                        )
+                        identifier, filetype, filedata = self.file_from_db(
+                            prot_id=uniprot_id,
+                            filetype=filetype,
+                            db=item,
+                        )
+                        fileorigin = db
+            else:
+                raise RuntimeError(
+                    "Structure %s not available on any database" % uniprot_id
+                )
+
+            # Optionally save the data
+            if filesave:
+                cache[identifier] = (fileorigin, filetype, filedata)
+                filename = cache[identifier]
+            else:
+                filename = None
 
         # Return the filename and file
         return filename, filedata
@@ -147,9 +150,7 @@ class Fetcher:
             new_dir: The directory to save data
 
         """
-        if not new_dir.endswith("/"):
-            new_dir = new_dir + "/"
-        self.save_directory = new_dir
+        self.save_directory = os.path.abspath(os.path.expanduser(new_dir))
 
     def get_default_db(self) -> str:
         """
