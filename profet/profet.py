@@ -190,7 +190,7 @@ class Fetcher:
 
         if uniprot_id in cache:
             filename = cache[uniprot_id]
-            signal_peptides = Cleaver.signal_residuenumbers_requester(
+            signal_peptides = self.Cleaver.signal_residuenumbers_requester(
                 uniprot_id
             )
             if filename.lower().endswith(".pdb"):
