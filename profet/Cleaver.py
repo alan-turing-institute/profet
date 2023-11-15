@@ -106,7 +106,7 @@ class Cleaver:
         Returns:
             None
         """
-
+        input_file = "/home/akv16273/.cache/pdb/p61316.pdb"
         with open(input_file, "r") as infile, open(
             output_filename, "w"
         ) as outfile:
@@ -139,6 +139,8 @@ class Cleaver:
 
         # Extract the base filename
         base_name = os.path.basename(input_file)
+        # Extract the directory without the file name
+        directory = os.path.dirname(input_file)
         # Extract signal peptide information
         if signal_peptides != []:
             signal_info = "_".join(
@@ -147,8 +149,7 @@ class Cleaver:
         else:
             signal_info = "none"
         # Creating the new filename
-        new_name = f"{os.path.splitext(base_name)[0]}_cleaved_{signal_info}.pdb"
-
+        new_name = f"{directory}/{os.path.splitext(base_name)[0]}_cleaved_{signal_info}.pdb"
         return new_name
 
     def anamder_cif(

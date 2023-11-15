@@ -190,18 +190,18 @@ class Fetcher:
 
         if uniprot_id in cache:
             filename = cache[uniprot_id]
-            signal_peptides = self.Cleaver.signal_residuenumbers_requester(
-                uniprot_id
+            signal_peptides = Cleaver.signal_residuenumbers_requester(
+                self, uniprot_id
             )
             if filename.lower().endswith(".pdb"):
-                new_name = Cleaver.anamder_pdb(filename, signal_peptides)
+                new_name = Cleaver.anamder_pdb(self, filename, signal_peptides)
                 Cleaver.remove_signal_peptide_pdb(
-                    filename, signal_peptides, new_name
+                    self, filename, signal_peptides, new_name
                 )
             elif filename.lower().endswith(".cif"):
-                new_name = Cleaver.anamder_pdb(filename, signal_peptides)
+                new_name = Cleaver.anamder_pdb(self, filename, signal_peptides)
                 Cleaver.remove_signal_peptide_cif(
-                    filename, signal_peptides, new_name
+                    self, filename, signal_peptides, new_name
                 )
             else:
                 print(
