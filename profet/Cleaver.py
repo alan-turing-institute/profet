@@ -170,6 +170,8 @@ class Cleaver:
 
         # Extract the base filename
         base_name = os.path.basename(input_file)
+        # Extract the directory without the file name
+        directory = os.path.dirname(input_file)
         # Extract signal peptide information
         if signal_peptides != []:
             signal_info = "_".join(
@@ -178,6 +180,6 @@ class Cleaver:
         else:
             signal_info = "none"
         # Mend the new filename
-        new_name = f"{os.path.splitext(base_name)[0]}_cleaved_{signal_info}.cif"
+        new_name = f"{directory}/{os.path.splitext(base_name)[0]}_cleaved_{signal_info}.cif"
 
         return new_name
