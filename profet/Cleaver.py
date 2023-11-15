@@ -106,7 +106,7 @@ class Cleaver:
         Returns:
             None
         """
-        input_file = "/home/akv16273/.cache/pdb/p61316.pdb"
+
         with open(input_file, "r") as infile, open(
             output_filename, "w"
         ) as outfile:
