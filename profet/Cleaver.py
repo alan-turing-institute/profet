@@ -107,19 +107,18 @@ class Cleaver:
             None
         """
 
-        with open(input_file, "r") as infile, open(
-            output_filename, "w"
-        ) as outfile:
-            for line in infile:
-                if line.startswith("ATOM"):
-                    residue_number = int(line[26:30].strip())
-                    for start_position, end_position in signal_peptides:
-                        if start_position <= residue_number <= end_position:
-                            break
-                        else:
-                            outfile.write(line)
-                else:
-                    outfile.write(line)
+        with open(input_file, "r") as infile:
+            with open(output_filename, "w") as outfile:
+                for line in infile:
+                    if line.startswith("ATOM"):
+                        residue_number = int(line[26:30].strip())
+                        for start_position, end_position in signal_peptides:
+                            if start_position <= residue_number <= end_position:
+                                break
+                            else:
+                                outfile.write(line)
+                    else:
+                        outfile.write(line)
 
     def anamder_pdb(
         self,

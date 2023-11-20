@@ -188,7 +188,7 @@ class Fetcher:
         """
         # Get the PDB cache
         cache = PDBFileCache(directory=self.save_directory)
-        identifier, _, _ = self.pdb.get_pdb(uniprot_id="P0A855", filetype="pdb")
+        identifier, _, _ = self.pdb.get_pdb(uniprot_id, filetype="pdb")
         if uniprot_id in cache:
             filename = cache[uniprot_id]
             signal_peptides = self.Cleaver.signal_residuenumbers_requester(

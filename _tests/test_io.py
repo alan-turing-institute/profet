@@ -139,7 +139,7 @@ def test_command_line_main(tmpdir, test_id):
 
 
 def get_cleave_ids():
-    test_id_map = {"alphafold": ["p0a855_cleaved_1to21", "p21170_cleaved_none"], "pdb": ["p0a855_cleaved_1to21", "p21170_cleaved_none"]}
+    test_id_map = {"alphafold": ["P0A855_cleaved_1to21", "P21170_cleaved_none"], "pdb": ["P0A855_2w8b_cleaved_1to21", "P21170_3nzq_cleaved_none"]}
     for source, test_id_list in test_id_map.items():
         for test_id in test_id_list:
             yield source, test_id
@@ -158,16 +158,15 @@ def test_fetcher_cleave_off_signal_peptides_pdb(tmpdir, test_id):
     pdb_id = remove_suffixes(pdb_id_signals)
     fetcher = Fetcher(source)
     fetcher.set_directory(str(tmpdir))
-    fetcher.get_file(uniprot_id =pdb_id, filetype="pdb", filesave=True, db=source)
-    fetcher.cleave_off_signal_peptides(pdb_id)
-    # Add a statement to check the contents of the directory
-    #directory_contents = os.listdir(str(tmpdir))
-    # Write the contents to a file for inspection
-    #output_file_path = "/home/akv16273/PycharmProjects/profet/profet/directory_contents.txt"
-    #with open(output_file_path, "w") as output_file:
-    #    output_file.write(str(directory_contents))
-    #    output_file.write(str(tmpdir)+ "/" + pdb_id_signals + ".pdb")
-    assert os.path.exists(str(tmpdir)+ "/" + pdb_id_signals + ".pdb")
+    if source == "pdb":
+        pdb_id = pdb_id[:-5]
+        fetcher.get_file(uniprot_id=pdb_id, filetype="pdb", filesave=True, db=source)
+        fetcher.cleave_off_signal_peptides(pdb_id)
+    else:
+        fetcher.get_file(uniprot_id=pdb_id, filetype="pdb", filesave=True, db=source)
+        fetcher.cleave_off_signal_peptides(pdb_id)
+    assert os.path.exists(str(tmpdir) + "/" + pdb_id_signals.lower() + ".pdb")
+
 
 @pytest.mark.parametrize("test_id", get_cleave_ids())
 def test_fetcher_cleave_off_signal_peptides_cif(tmpdir, test_id):
@@ -175,6 +174,11 @@ def test_fetcher_cleave_off_signal_peptides_cif(tmpdir, test_id):
     pdb_id = remove_suffixes(pdb_id_signals)
     fetcher = Fetcher(source)
     fetcher.set_directory(str(tmpdir))
-    fetcher.get_file(uniprot_id=pdb_id, filetype="cif", filesave=True, db=source)
-    fetcher.cleave_off_signal_peptides(pdb_id)
-    assert os.path.exists(str(tmpdir) + "/" + pdb_id_signals + ".cif")
+    if source == "pdb":
+        pdb_id = pdb_id[:-5]
+        fetcher.get_file(uniprot_id=pdb_id, filetype="cif", filesave=True, db=source)
+        fetcher.cleave_off_signal_peptides(pdb_id)
+    else:
+        fetcher.get_file(uniprot_id=pdb_id, filetype="cif", filesave=True, db=source)
+        fetcher.cleave_off_signal_peptides(pdb_id)
+    assert os.path.exists(str(tmpdir) + "/" + pdb_id_signals.lower() + ".cif")
