@@ -48,7 +48,6 @@ class PDB_DB:
         Args:
             uniprot_id: ID from Uniprot
             filetype: File type to be retrieved: cif, pdb
-            filedir: The directory to save the data
 
         Returns:
             Tuple containing the filename and file from the database

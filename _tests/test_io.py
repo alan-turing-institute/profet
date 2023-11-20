@@ -5,12 +5,15 @@ import profet.command_line
 from profet import Fetcher
 from profet import alphafold
 from profet import pdb
+from profet import Cleaver
 from collections import defaultdict
 from contextlib import redirect_stdout
+import re
 
 ONLY_ALPHAFOLD = "F4HvG8"
 ONLY_PDB = "7U6Q"
-
+ONE_SIGNAL_PEPTIDE = "P61316"
+NO_SIGNAL_PEPTIDE = "P21170"
 
 def get_test_ids():
     test_id_map = {"alphafold": ["F4HvG8"], "pdb": ["4V5D", "6Z6U", "7U6Q"]}
@@ -132,3 +135,46 @@ def test_command_line_main(tmpdir, test_id):
         lines = list(infile.readlines())
         _, filename, _ = lines[-1].split("'")
         assert os.path.exists(filename)
+
+
+
+def get_cleave_ids():
+    test_id_map = {"alphafold": ["p0a855_cleaved_1to21", "p21170_cleaved_none"], "pdb": ["p0a855_cleaved_1to21", "p21170_cleaved_none"]}
+    for source, test_id_list in test_id_map.items():
+        for test_id in test_id_list:
+            yield source, test_id
+
+def remove_suffixes(ids):
+    # Define patterns to match "_none" and "_1to21" at the end of the string
+    patterns = [r'_cleaved_none$', r'_cleaved_1to21$']
+    # Apply each pattern and remove matching suffixes
+    for pattern in patterns:
+        ids = re.sub(pattern, '', ids)
+    return ids
+
+@pytest.mark.parametrize("test_id", get_cleave_ids())
+def test_fetcher_cleave_off_signal_peptides_pdb(tmpdir, test_id):
+    source, pdb_id_signals = test_id
+    pdb_id = remove_suffixes(pdb_id_signals)
+    fetcher = Fetcher(source)
+    fetcher.set_directory(str(tmpdir))
+    fetcher.get_file(uniprot_id =pdb_id, filetype="pdb", filesave=True, db=source)
+    fetcher.cleave_off_signal_peptides(pdb_id)
+    # Add a statement to check the contents of the directory
+    #directory_contents = os.listdir(str(tmpdir))
+    # Write the contents to a file for inspection
+    #output_file_path = "/home/akv16273/PycharmProjects/profet/profet/directory_contents.txt"
+    #with open(output_file_path, "w") as output_file:
+    #    output_file.write(str(directory_contents))
+    #    output_file.write(str(tmpdir)+ "/" + pdb_id_signals + ".pdb")
+    assert os.path.exists(str(tmpdir)+ "/" + pdb_id_signals + ".pdb")
+
+@pytest.mark.parametrize("test_id", get_cleave_ids())
+def test_fetcher_cleave_off_signal_peptides_cif(tmpdir, test_id):
+    source, pdb_id_signals = test_id
+    pdb_id = remove_suffixes(pdb_id_signals)
+    fetcher = Fetcher(source)
+    fetcher.set_directory(str(tmpdir))
+    fetcher.get_file(uniprot_id=pdb_id, filetype="cif", filesave=True, db=source)
+    fetcher.cleave_off_signal_peptides(pdb_id)
+    assert os.path.exists(str(tmpdir) + "/" + pdb_id_signals + ".cif")

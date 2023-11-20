@@ -188,19 +188,26 @@ class Fetcher:
         """
         # Get the PDB cache
         cache = PDBFileCache(directory=self.save_directory)
-
+        identifier, _, _ = self.pdb.get_pdb(uniprot_id="P0A855", filetype="pdb")
+        print(identifier)
         if uniprot_id in cache:
             filename = cache[uniprot_id]
+            if identifier exists
+                new_filename = identifier + path
+            else:
+                new_filename =
+            print(filename)
+            print(cache.path(uniprot_id, filetype="pdb"))
             signal_peptides = self.Cleaver.signal_residuenumbers_requester(
                 uniprot_id
             )
             if filename.lower().endswith(".pdb"):
-                new_name = self.Cleaver.anamder_pdb(filename, signal_peptides)
+                new_name = self.Cleaver.anamder_pdb(new_filename, signal_peptides)
                 self.Cleaver.remove_signal_peptide_pdb(
                     filename, signal_peptides, new_name
                 )
             elif filename.lower().endswith(".cif"):
-                new_name = self.Cleaver.anamder_pdb(filename, signal_peptides)
+                new_name = self.Cleaver.anamder_cif(new_filename, signal_peptides)
                 self.Cleaver.remove_signal_peptide_cif(
                     filename, signal_peptides, new_name
                 )
@@ -208,3 +215,5 @@ class Fetcher:
                 print(
                     "Unsupported file format. Please download a PDB or CIF file using profet."
                 )
+        else:
+            print("Please first download the protein structure using profet.")
