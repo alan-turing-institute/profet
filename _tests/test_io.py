@@ -120,13 +120,16 @@ def test_cache(tmpdir):
 
 
 def test_cache_download_cif_and_pdb(tmpdir):
-
     fetcher = profet.Fetcher()
     fetcher.set_directory(str(tmpdir))
 
-    fetcher.get_file(uniprot_id = "P0A855", filetype = "cif", filesave = True, db = "alphafold")
+    fetcher.get_file(
+        uniprot_id="P0A855", filetype="cif", filesave=True, db="alphafold"
+    )
 
-    fetcher.get_file(uniprot_id = "P0A855", filetype = "pdb", filesave = True, db = "alphafold")
+    fetcher.get_file(
+        uniprot_id="P0A855", filetype="pdb", filesave=True, db="alphafold"
+    )
 
     assert os.path.exists(os.path.join(tmpdir, "p0a855.cif"))
     assert os.path.exists(os.path.join(tmpdir, "p0a855.pdb"))

@@ -100,7 +100,10 @@ class Fetcher:
 
         # If the file is already downloaded then use that, otherwise search in
         # the PDB or alphafold databases
-        if uniprot_id in cache and os.path.splitext(cache[uniprot_id])[1] == filetype:
+        if (
+            uniprot_id in cache
+            and os.path.splitext(cache[uniprot_id])[1] == filetype
+        ):
             filename = cache[uniprot_id]
             with open(filename) as infile:
                 filedata = infile.read()
