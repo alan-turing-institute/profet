@@ -15,6 +15,7 @@ ONLY_PDB = "7U6Q"
 ONE_SIGNAL_PEPTIDE = "P61316"
 NO_SIGNAL_PEPTIDE = "P21170"
 
+
 def get_test_ids():
     test_id_map = {"alphafold": ["F4HvG8"], "pdb": ["4V5D", "6Z6U", "7U6Q"]}
 
@@ -137,20 +138,24 @@ def test_command_line_main(tmpdir, test_id):
         assert os.path.exists(filename)
 
 
-
 def get_cleave_ids():
-    test_id_map = {"alphafold": ["P0A855_cleaved_1to21", "P21170_cleaved_none"], "pdb": ["P0A855_2w8b_cleaved_1to21", "P21170_3nzq_cleaved_none"]}
+    test_id_map = {
+        "alphafold": ["P0A855_cleaved_1to21", "P21170_cleaved_none"],
+        "pdb": ["P0A855_2w8b_cleaved_1to21", "P21170_3nzq_cleaved_none"],
+    }
     for source, test_id_list in test_id_map.items():
         for test_id in test_id_list:
             yield source, test_id
 
+
 def remove_suffixes(ids):
     # Define patterns to match "_none" and "_1to21" at the end of the string
-    patterns = [r'_cleaved_none$', r'_cleaved_1to21$']
+    patterns = [r"_cleaved_none$", r"_cleaved_1to21$"]
     # Apply each pattern and remove matching suffixes
     for pattern in patterns:
-        ids = re.sub(pattern, '', ids)
+        ids = re.sub(pattern, "", ids)
     return ids
+
 
 @pytest.mark.parametrize("test_id", get_cleave_ids())
 def test_fetcher_cleave_off_signal_peptides_pdb(tmpdir, test_id):
@@ -160,10 +165,14 @@ def test_fetcher_cleave_off_signal_peptides_pdb(tmpdir, test_id):
     fetcher.set_directory(str(tmpdir))
     if source == "pdb":
         pdb_id = pdb_id[:-5]
-        fetcher.get_file(uniprot_id=pdb_id, filetype="pdb", filesave=True, db=source)
+        fetcher.get_file(
+            uniprot_id=pdb_id, filetype="pdb", filesave=True, db=source
+        )
         fetcher.cleave_off_signal_peptides(pdb_id)
     else:
-        fetcher.get_file(uniprot_id=pdb_id, filetype="pdb", filesave=True, db=source)
+        fetcher.get_file(
+            uniprot_id=pdb_id, filetype="pdb", filesave=True, db=source
+        )
         fetcher.cleave_off_signal_peptides(pdb_id)
     assert os.path.exists(str(tmpdir) + "/" + pdb_id_signals.lower() + ".pdb")
 
@@ -176,9 +185,13 @@ def test_fetcher_cleave_off_signal_peptides_cif(tmpdir, test_id):
     fetcher.set_directory(str(tmpdir))
     if source == "pdb":
         pdb_id = pdb_id[:-5]
-        fetcher.get_file(uniprot_id=pdb_id, filetype="cif", filesave=True, db=source)
+        fetcher.get_file(
+            uniprot_id=pdb_id, filetype="cif", filesave=True, db=source
+        )
         fetcher.cleave_off_signal_peptides(pdb_id)
     else:
-        fetcher.get_file(uniprot_id=pdb_id, filetype="cif", filesave=True, db=source)
+        fetcher.get_file(
+            uniprot_id=pdb_id, filetype="cif", filesave=True, db=source
+        )
         fetcher.cleave_off_signal_peptides(pdb_id)
     assert os.path.exists(str(tmpdir) + "/" + pdb_id_signals.lower() + ".cif")
