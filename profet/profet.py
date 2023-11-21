@@ -41,6 +41,14 @@ class Fetcher:
             available_db.append("alphafold")
         return available_db
 
+    def cache(self) -> PDBFileCache:
+        """
+        Returns:
+            The PDB file cache
+
+        """
+        return PDBFileCache(directory=self.save_directory)
+
     def file_from_db(
         self,
         prot_id: str,
@@ -92,7 +100,7 @@ class Fetcher:
 
         # If the file is already downloaded then use that, otherwise search in
         # the PDB or alphafold databases
-        if uniprot_id in cache:
+        if uniprot_id in cache and os.path.splitext(cache[uniprot_id])[1] == filetype:
             filename = cache[uniprot_id]
             with open(filename) as infile:
                 filedata = infile.read()
