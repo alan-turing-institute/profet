@@ -110,15 +110,29 @@ class Cleaver:
         with open(input_file, "r") as infile:
             with open(output_filename, "w") as outfile:
                 for line in infile:
-                    if line.startswith("ATOM"):
-                        residue_number = int(line[26:30].strip())
-                        for start_position, end_position in signal_peptides:
-                            if start_position <= residue_number <= end_position:
-                                break
-                            else:
-                                outfile.write(line)
-                    else:
+                    if not signal_peptides:
                         outfile.write(line)
+                    else:
+                        if line.startswith("ATOM"):
+                            # Split the line into columns based on whitespace
+                            columns = line.split()
+                            try:
+                                residue_number = int(columns[8])
+                            except ValueError as e:
+                                print(f"Error converting to int: {e}")
+                                # Handle the error or raise it again if needed
+
+                            for start_position, end_position in signal_peptides:
+                                if (
+                                    start_position
+                                    <= residue_number
+                                    <= end_position
+                                ):
+                                    break
+                                else:
+                                    outfile.write(line)
+                        else:
+                            outfile.write(line)
 
     def anamder_pdb(
         self,
