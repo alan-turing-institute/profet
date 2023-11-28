@@ -1,6 +1,7 @@
 from .alphafold import Alphafold_DB
 from .pdb import PDB_DB
 from .cache import PDBFileCache
+from .Cleaver import Cleaver
 import os
 
 
@@ -21,6 +22,7 @@ class Fetcher:
         self.alpha = Alphafold_DB()
         self.search_results = {}  # type: ignore
         self.save_directory = save_directory
+        self.Cleaver = Cleaver()
 
     def check_db(self, uniprot_id: str) -> list:
         """
@@ -172,3 +174,61 @@ class Fetcher:
             self.type = db
         else:
             raise RuntimeError("Database not available: %s" % db)
+
+    def cleave_off_signal_peptides(
+        self,
+        uniprot_id: str,
+    ):
+        """
+        Deletes the signal peptides from the structure according to UniProt.
+
+        Args:
+            uniprot_id: UniProt ID of the structure.
+
+        """
+        # Get the PDB cache
+        cache = PDBFileCache(directory=self.save_directory)
+        identifier, _, _ = self.pdb.get_pdb(uniprot_id, filetype="pdb")
+        if uniprot_id in cache:
+            filename = cache[uniprot_id]
+            signal_peptides = self.Cleaver.signal_residuenumbers_requester(
+                uniprot_id
+            )
+            # Distinguish between pdb and cif format
+            if filename.lower().endswith(".pdb"):
+                new_name = self.Cleaver.anamder_pdb(filename, signal_peptides)
+                self.Cleaver.remove_signal_peptide_pdb(
+                    filename, signal_peptides, new_name
+                )
+            elif filename.lower().endswith(".cif"):
+                new_name = self.Cleaver.anamder_cif(filename, signal_peptides)
+                self.Cleaver.remove_signal_peptide_cif(
+                    filename, signal_peptides, new_name
+                )
+            else:
+                print(
+                    "Unsupported file format. Please download a PDB or CIF file using profet."
+                )
+        # Make sure the file was not annotated by the get_pdb in the case of a ProteinDataBank pull
+        elif identifier in cache:
+            filename = cache[identifier]
+            signal_peptides = self.Cleaver.signal_residuenumbers_requester(
+                uniprot_id
+            )
+            # Distinguish between pdb and cif format
+            if filename.lower().endswith(".pdb"):
+                new_name = self.Cleaver.anamder_pdb(filename, signal_peptides)
+                self.Cleaver.remove_signal_peptide_pdb(
+                    filename, signal_peptides, new_name
+                )
+            elif filename.lower().endswith(".cif"):
+                new_name = self.Cleaver.anamder_cif(filename, signal_peptides)
+                self.Cleaver.remove_signal_peptide_cif(
+                    filename, signal_peptides, new_name
+                )
+            else:
+                print(
+                    "Unsupported file format. Please download a PDB or CIF file using profet."
+                )
+        else:
+            print("Please first download the protein structure using profet.")
