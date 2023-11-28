@@ -123,6 +123,27 @@ def test_cache(tmpdir):
     assert os.path.join(tmpdir, "1u2p.pdb") in items["1u2p"]
 
 
+def test_cache_download_cif_and_pdb(tmpdir):
+    fetcher = profet.Fetcher()
+    fetcher.set_directory(str(tmpdir))
+
+    fetcher.get_file(
+        uniprot_id="P0A855", filetype="cif", filesave=True, db="alphafold"
+    )
+
+    fetcher.get_file(
+        uniprot_id="P0A855", filetype="pdb", filesave=True, db="alphafold"
+    )
+
+    assert os.path.exists(os.path.join(tmpdir, "p0a855.cif"))
+    assert os.path.exists(os.path.join(tmpdir, "p0a855.pdb"))
+
+    items = defaultdict(list)
+    for identifier, filename in fetcher.cache().items():
+        items[identifier].append(filename)
+    assert len(items["p0a855"]) == 2
+
+
 @pytest.mark.parametrize("test_id", get_test_ids())
 def test_command_line_main(tmpdir, test_id):
     source, pdb_id = test_id
