@@ -9,7 +9,7 @@ A Python 3  **pro**tein structure **fet**cher. Retrieves the cif or pdb files fr
 [![Publishing](https://github.com/alan-turing-institute/profet/actions/workflows/python-publish.yml/badge.svg)](https://github.com/alan-turing-institute/profet/actions/workflows/python-publish.yml)
 [![Documentation](https://github.com/alan-turing-institute/profet/actions/workflows/sphinx.yml/badge.svg)](https://github.com/alan-turing-institute/profet/actions/workflows/sphinx.yml)
 
-### Dependencies
+## Dependencies
 
 Please install the latest version of PyPDB using:
 
@@ -23,7 +23,9 @@ or
 pip install git+git://github.com/williamgilpin/pypdb
 ```
 
-### Installation
+## Installation
+
+### For users
 
 Install `profet` using pip:
 
@@ -31,13 +33,15 @@ Install `profet` using pip:
 pip install profet
 ```
 
-To install the development version, which contains the latest features and fixes, install directly from GitHub using
+### For developers
+
+To install the development version, which contains the latest features and fixes, install directly from GitHub using:
 
 ```sh
 pip install git+git://github.com/alan-turing-institute/profet
 ```
 
-Test the installation, navigate to the root directory and run
+To test the installation, navigate to the root directory of the package and run
 
 ```sh
 pytest
@@ -45,9 +49,11 @@ pytest
 
 This code has been designed and tested for Python 3.
 
-### Usage
+## Usage
 
 This package can be used to retrieve the available protein structure from any Uniprot ID. 
+
+### Python API Usage
 
 The `Fetcher` class can search the IDs in both PDB and Alphafold, and saves the search results in a dictionary.
 
@@ -60,7 +66,7 @@ The files can be saved to a local file with `filesave`: the files are saved as `
 
 Run `search_history()` to see the search history of the fetcher.
 
-#### Example usage:
+#### Example:
 
 ```python
 import profet as pf
@@ -76,20 +82,24 @@ returns:
 {'P61316': ['pdb', 'alphafold']}
 ```
 
-Loads Profet and the file-fetcher, then specifies a directory to save the files at.
+Loads `profet` and the file-fetcher, then specifies a directory to save the files at.
 Lastly, downloads the protein with uniprod ID "P61316", in pdb format from the Alphafold databank and saves it in the specified directory.
 
 For more detailed examples consult the following [Python notebook](./run_profet.ipynb).
 
-### Documentation
+### CLI Usage
+
+(TODO: add CLI usage)
+
+## Documentation
 
 You can find more documentation including a description of the python api [here](https://alan-turing-institute.github.io/profet/).
 
-### Issues and Feature Requests
+## Issues and Feature Requests
 
 If you run into an issue, or if you find a workaround for an existing issue, we would very much appreciate it if you could post your question or code as a [GitHub issue](https://github.com/alan-turing-institute/profet/issues). 
 
-### Contributions
+## Contributions
 
-If you would like to help contribute to profet, please read our [contribution](CONTRIBUTING.md) guide and [code of conduct](CODE_OF_CONDUCT.md).
+If you would like to help contribute to `profet`, please read our [contribution](CONTRIBUTING.md) guide and [code of conduct](CODE_OF_CONDUCT.md).
 
