@@ -51,7 +51,7 @@ This code has been designed and tested for Python 3.
 
 ## Usage
 
-This package can be used to retrieve the available protein structure from any Uniprot ID. 
+This package can be used to retrieve the available protein structure from any Uniprot ID. It can also be used to automatically delete signal peptides off the structure.
 
 ### Python API Usage
 
@@ -89,7 +89,19 @@ For more detailed examples consult the following [Python notebook](./run_profet.
 
 ### CLI Usage
 
-(TODO: add CLI usage)
+Once a structure is downloaded, the signal cleaving function compares the sequence of the structure to the UniProt database for any signal peptides included in the structure and automatically delete the signal peptides from the structure.
+The cleaved structure is saved as a separate file, with the deleted residue positions added to the filename. In the case of no signal peptides being detected, as new file names structure-ID_None.cif/.pdb will be saved.
+
+#### Example:
+
+```python
+import profet as pf
+fetcher = pf.Fetcher()
+fetcher.set_directory("/path/to/directory/folder")
+fetcher.get_file(uniprot_id = "P0A855", filetype = "pdb", filesave = True, db = "alphafold")
+fetcher.cleave_off_signal_peptides("P0A855")
+```
+This will save p0a855.pdb and p0a855_cleaved_1to21.pdb in the specified directory.
 
 ## Documentation
 
