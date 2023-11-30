@@ -105,6 +105,21 @@ This will save p0a855.pdb and p0a855_cleaved_1to21.pdb to the specified director
 
 ### Command Line Usage
 
+The `profet` library also has a command line interface that mirrors the python
+API and which can be used to download entries from both the PDB and AlphaFold.
+An example of how to use the profet command line program is shown in the
+following code snippet.
+
+```bash
+profet 4v1w \
+  --filetype=pdb \
+  --main_db=pdb \
+  --save_directory="~/.pdb"
+```
+
+In this example, the entry "4V1W" is to be downloaded from the PDB database as
+a .pdb file. The file will be cached in the "~/.pdb" directory for future use.
+
 ## Documentation
 
 You can find more documentation including a description of the python api [here](https://alan-turing-institute.github.io/profet/).
