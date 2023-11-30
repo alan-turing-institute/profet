@@ -13,7 +13,7 @@ authors:
     affiliation: "2,3"
   - name: Nikolai Juraschko
     orcid: 0000-0001-6748-1716
-    affiliation: "2,4"
+    affiliation: "1,2,4"
   - name: Mark Basham
     orcid: 0000-0002-8438-1415
     affiliation: 2
@@ -116,6 +116,6 @@ In this example, the entry "4V1W" is to be downloaded from the PDB database as a
 
 # Acknowledgements
 
-The Rosalind Franklin Institute is an EPSRC core funded Institute. James Parkhurst is funded by the Wellcome Trust through the Electrifying Life Science grant. Nikolai Juraschko is funded by EPSRC grant number EP/V521899/1. This work was supported by Wave 1 of The UKRI Strategic Priorities Fund under the EPSRC Grant EP/W006022/1, particularly the “AI for Science” theme within that grant & The Alan Turing Institute.
+The Rosalind Franklin Institute is an EPSRC core funded Institute. James Parkhurst is funded by the Wellcome Trust through the Electrifying Life Science grant. Nikolai Juraschko is funded by EPSRC grant number EP/V521899/1 and this work was supported by The Alan Turing Institute's Enrichment Scheme. This work was supported by Wave 1 of The UKRI Strategic Priorities Fund under the EPSRC Grant EP/W006022/1, particularly the “AI for Science” theme within that grant & The Alan Turing Institute.
 
 # References 
