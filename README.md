@@ -87,6 +87,8 @@ Lastly, downloads the protein with uniprod ID "P61316", in pdb format from the A
 
 For more detailed examples consult the following [Python notebook](./run_profet.ipynb).
 
+### Signal Peptide Cleaving Usage
+
 Once a structure is downloaded using `get_file`, the signal cleaving function `cleave_off_signal_peptides` from the `Fetcher` class, compares the sequence of the structure to the UniProt database for any signal peptides included in the structure. It then automatically deletes the signal peptides from the structure.
 The cleaved structure is saved as a separate file, with the deleted residue positions added to the filename. In the case of no signal peptides being detected, as new file named "structure-ID_None.cif/.pdb" will be saved.
 
