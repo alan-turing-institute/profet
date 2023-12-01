@@ -41,7 +41,13 @@ To install the development version, which contains the latest features and fixes
 pip install git+git://github.com/alan-turing-institute/profet
 ```
 
-To test the installation, navigate to the root directory of the package and run
+To test the installation, you need to have pytest and pytest-cov packagages installed which can be done as follows.
+
+```sh
+pip install pytest pytest-cov
+```
+
+Then navigate to the root directory of the package and run
 
 ```sh
 pytest
