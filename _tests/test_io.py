@@ -5,7 +5,6 @@ import profet.command_line
 from profet import Fetcher
 from profet import alphafold
 from profet import pdb
-from profet import Cleaver
 from collections import defaultdict
 from contextlib import redirect_stdout
 import re
