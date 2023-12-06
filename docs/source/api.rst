@@ -15,8 +15,3 @@ can be accessed through the :class:`profet.alphafold.Alphafold_DB` and
 .. autoclass:: profet.pdb.PDB_DB
   :members:
 
-.. autoclass:: profet.cache.PDBFileCache
-  :members:
-
-.. autoclass:: profet.cleaver.Cleaver
-  :members:

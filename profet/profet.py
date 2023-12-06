@@ -1,7 +1,7 @@
 from .alphafold import Alphafold_DB
 from .pdb import PDB_DB
 from .cache import PDBFileCache
-from .cleaver import Cleaver
+from .Cleaver import Cleaver
 import os
 
 
