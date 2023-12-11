@@ -38,7 +38,7 @@ bibliography: paper.bib
 
 # Summary
 
-The *profet* (**pro**tein structure **fet**cher) python library provides a simple and streamlined interface that makes it easy to download protein structures from various online databases. Since its founding in 1971, over 1 million experimentally determined macromolecular structures have been deposited and made freely available to all in the Protein Data Bank (PDB) archive [@pdb]. The availability of this wealth of experimental data has been pivotal in the development of new software in the field. Recently, the AlphaFold2 [@alphafold] team released over 200 million predicted macromolecular structures on their online platform. Being able to easily access these incredible open repositories of experimental and simulated data is crucial for accelerating scientific software development in structural biology. However, in practice, doing this can be cumbersome, as each database has their own manual download system, or individual python package. 
+The *profet* (**pro**tein structure **fet**cher) python library provides a simple and streamlined interface that makes it easy to download protein structures from various online databases. Since its founding in 1971, over 1 million experimentally determined macromolecular structures have been deposited and made freely available to all in the Protein Data Bank (PDB) archive [@pdb]. The availability of this wealth of experimental data has been pivotal in the development of new software in the field. Recently, the AlphaFold2 [@alphafold] team released over 200 million predicted macromolecular structures on their online platform. Being able to easily access these large open repositories of experimental and simulated data is crucial for accelerating scientific software development in structural biology. However, in practice, doing this can be cumbersome, and we lack a unified framework to download structural data in a format compatible with modern machine learning problems. 
 
 With *profet*, users can conveniently download individual structures directly using python by simply specifying their Uniprot ID [@uniprot]. Users can specify which database they would like to use by default and if the structure is available from that source it will be downloaded. If the structure is not available from that source, *profet* will seek to download it from an alternative database. When a structure file is downloaded, it is cached to a local directory; if the same structure is requested again, either during the same session or a later session, then the cached structure file will be used to avoid having to download the file multiple times. Typical applications that require the ability to download many structures on demand are protein matching algorithms for visual proteomics, such as [@cryolo] [@affinity], large scale models in molecular dynamics simulations [@mcguffee] [@bigsim], and electron microscopy simulations [@parakeet]. As well as having a simple python API, profet also provides a simple command line interface, enabling the user to utilise profet either as part of a script or as a standalone program.
 
@@ -47,21 +47,25 @@ With *profet*, users can conveniently download individual structures directly us
 
 While there are existing methods available to access and download files from the PDB using python (for example, with the pypdb library [@pypdb]) or R (for example with bio3d library [@bio3d]), AlphaFold and other online databases require users to either manually download files through a web browser or submit raw FTP requests to be able to download files in an automated fashion. Furthermore, currently, each user needs to check whether the structures of interest are available in each database as there is currently no unified method to search through both the PDB and AlphaFold databases simultaneously. The *profet* library provides a convenient unified interface to retrieve structures of biological macromolecules from either the PDB or AlphaFold database, simply by specifying the Uniprot ID.
 
-At the time of writing, the authors are not aware of any other tool that allows a user to download protein structures from multiple databases in a unified interface, or systematically delete signal peptides identified by UniProt. Commonly, structures are downloaded directly from the respective portal interfaces. For batch downloads, it is necessary to have scripting skills [@batch]. With computational power increasing and simulation sizes reaching hundreds-of-millions of atoms [@singharoy], it is becoming increasingly important to automate the pipeline of PDB structure access, which *profet* provides a portal to. As an added feature, *profet* provides the option to cleave a signal peptide from the retrieved structures. Furthermore, *profet* is scalable and has the ability to add other databases as search options (such as CATHdb[@cathdb]) by providing a template for accessing database APIs.
+At the time of writing, the authors are not aware of any other tool that allows a user to download protein structures from multiple databases in a unified interface. Commonly, structures are downloaded directly from the respective portal interfaces. For batch downloads, it is necessary to have scripting skills [@batch]. With computational power increasing and simulation sizes reaching hundreds-of-millions of atoms [@singharoy], it is becoming increasingly important to automate the pipeline of PDB structure access, which *profet* provides a portal to. As an added feature, *profet* provides the option to cleave a signal peptide from the retrieved structures. Furthermore, *profet* is scalable and has the ability to add other databases as search options (such as CATHdb[@cathdb]) by providing a template for accessing database APIs.
 
 
 # *profet* python example
  
 The *profet* library has a high-level python API that can be used to download entries from both the PDB and AlphaFold through a single unified object oriented interface. An example of how to access this functionality through the main protein fetcher class, `profet.Fetcher`, is shown in the following code snippet.
 
-```python=
+```python
 from profet import Fetcher
 
 # Initialise the fetcher and the cache directory
 fetcher = Fetcher("pdb", save_directory="~/.pdb/")
 
 # Get the filename and filedata
-filename, filedata = fetcher.get_file("4v1w", filetype="cif", filesave=True)
+filename, filedata = fetcher.get_file(
+  "4v1w",
+  filetype="cif",
+  filesave=True
+)
 
 # Print the filename and first few lines of the file
 print("Filename for 4v1w = %s" % filename)
@@ -74,7 +78,7 @@ history_dictionary = fetcher.search_history()
 
 This results in the following output:
 
-```bash
+```
 Filename for 4v1w = 4v1w.cif
 File contents:
 data_4V1W
@@ -95,8 +99,12 @@ When downloading the protein structure, the `filetype` keyword can also be speci
 
 Finally, the `profet.Fetcher.search_history` function can be used to access the list of previously searched structures. The command will show a dictionary of the IDs searched by the fetcher and the databases where they are available. 
 
-```
-{'7U6Q': ['pdb'], 'F4HvG8': ['alphafold'], 'A0A023FDY8': ['pdb', 'alphafold']}
+```python
+{
+  '7U6Q': ['pdb'],
+  'F4HvG8': ['alphafold'],
+  'A0A023FDY8': ['pdb', 'alphafold']
+}
 ```
 
 The functionality can be tested using the `run_profet.ipynb` Jupyter notebook, available in the package repository.
@@ -112,7 +120,12 @@ The cleaved structure is saved as a separate file, with the deleted residue posi
 import profet as pf
 fetcher = pf.Fetcher()
 fetcher.set_directory("/path/to/directory/folder")
-fetcher.get_file(uniprot_id = "P0A855", filetype = "pdb", filesave = True, db = "alphafold")
+fetcher.get_file(
+  uniprot_id="P0A855",
+  filetype="pdb",
+  filesave=True,
+  db="alphafold"
+)
 fetcher.cleave_off_signal_peptides("P0A855")
 ```
 This will save `p0a855.pdb` and `p0a855_cleaved_1to21.pdb` to the specified directory.
