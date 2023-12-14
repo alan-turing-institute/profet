@@ -161,7 +161,7 @@ def test_command_line_main(tmpdir, test_id):
 def get_cleave_ids():
     test_id_map = {
         "alphafold": ["P0A855_cleaved_1to21", "P21170_cleaved_none"],
-        "pdb": ["P0A855_2w8b_cleaved_1to21", "P21170_3nzq_cleaved_none"],
+        "pdb": ["P0A855_1c5k_cleaved_1to21", "P21170_3nzq_cleaved_none"],
     }
     for source, test_id_list in test_id_map.items():
         for test_id in test_id_list:
