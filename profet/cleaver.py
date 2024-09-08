@@ -196,3 +196,128 @@ class Cleaver:
         new_name = f"{directory}/{os.path.splitext(base_name)[0]}_cleaved_{signal_info}.cif"
 
         return new_name
+
+
+    def remove_hydrogens(
+            self,
+            input_file: str,
+            output_filename: str = None,
+    ):
+        """
+        Load a PDB or CIF file and delete all hydrogen atoms. Save as a new pdb or cif file.
+
+        Args:
+            input_file: Path to the input file (pdb or cif)
+            output_filename: Name of the output file to save without hydrogens. If not provided, defaults to originalname_nohydrogens.pdb or originalname_nohydrogens.cif.
+        Returns:
+            None
+        """
+        def is_hydrogen_pdb(line: str) -> bool:
+            return (line.startswith("ATOM") or line.startswith("HETATM")) and line[12:16].strip().startswith("H")
+
+        def is_hydrogen_cif(line: str) -> bool:
+            return line.startswith("ATOM") and " H" in line
+
+        # Determine file format based on extension
+        file_extension = input_file.split('.')[-1].lower()
+
+        # If output_filename is not provided, create the default one
+        if output_filename is None:
+            base_name, ext = os.path.splitext(input_file)
+            output_filename = f"{base_name}_nohydrogens{ext}"
+
+        with open(input_file, "r") as input_f:
+            with open(output_filename, "w") as output_f:
+                for line in input_f:
+                    if file_extension == "pdb":
+                        if not is_hydrogen_pdb(line):
+                            output_f.write(line)
+                    elif file_extension == "cif":
+                        if not is_hydrogen_cif(line):
+                            output_f.write(line)
+                    else:
+                        raise ValueError("Unsupported file format. Only pdb and cif are supported.")
+
+
+    def remove_water_atoms(
+            self,
+            input_file: str,
+            output_filename: str = None,
+    ):
+        """
+        Delete all water atoms from pdb or cif file and save as new file.
+
+        Args:
+            input_file: Path to the input file (pdb or cif)
+            output_filename: Name of the output file to save without water atoms.
+                             If not provided, defaults to originalname_nowater.pdb or originalname_nowater.cif.
+        Returns:
+            None
+        """
+        def is_water_pdb(line: str) -> bool:
+            return (line.startswith("ATOM") or line.startswith("HETATM")) and line[17:20].strip() == "HOH"
+
+        def is_water_cif(line: str) -> bool:
+            return (line.startswith("ATOM") or line.startswith("HETATM")) and "HOH" in line
+
+        # Determine file format based on extension
+        file_extension = input_file.split('.')[-1].lower()
+
+        # If output_filename is not provided, create the default one
+        if output_filename is None:
+            base_name, ext = os.path.splitext(input_file)
+            output_filename = f"{base_name}_nowater{ext}"
+
+        with open(input_file, "r") as input_f:
+            with open(output_filename, "w") as output_f:
+                for line in input_f:
+                    if file_extension == "pdb":
+                        if not is_water_pdb(line):
+                            output_f.write(line)
+                    elif file_extension == "cif":
+                        if not is_water_cif(line):
+                            output_f.write(line)
+                    else:
+                        raise ValueError("Unsupported file format. Only pdb and cif are supported.")
+
+    def remove_hetatoms(
+            self,
+            input_file: str,
+            output_filename: str = None,
+    ):
+        """
+        Load a pdb or cif file and delete all HETATM lines and save as a new file.
+
+        Args:
+            input_file: Path to the input file (pdb or cif)
+            output_filename: Name of the output file to save without HETATM entries.
+                             If not provided, defaults to originalname_nohetatm.pdb or originalname_nohetatm.cif.
+        Returns:
+            None
+        """
+
+        def is_hetatm_pdb(line: str) -> bool:
+            return line.startswith("HETATM")
+
+        def is_hetatm_cif(line: str) -> bool:
+            return "HETATM" in line
+
+        # Determine file format based on extension
+        file_extension = input_file.split('.')[-1].lower()
+
+        # If output_filename is not provided, create the default one
+        if output_filename is None:
+            base_name, ext = os.path.splitext(input_file)
+            output_filename = f"{base_name}_nohetatm{ext}"
+
+        with open(input_file, "r") as input_f:
+            with open(output_filename, "w") as output_f:
+                for line in input_f:
+                    if file_extension == "pdb":
+                        if not is_hetatm_pdb(line):
+                            output_f.write(line)
+                    elif file_extension == "cif":
+                        if not is_hetatm_cif(line):
+                            output_f.write(line)
+                    else:
+                        raise ValueError("Unsupported file format. Only pdb and cif are supported.")
