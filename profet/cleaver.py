@@ -197,11 +197,10 @@ class Cleaver:
 
         return new_name
 
-
     def remove_hydrogens(
-            self,
-            input_file: str,
-            output_filename: str = None,
+        self,
+        input_file: str,
+        output_filename: str = None,
     ):
         """
         Load a PDB or CIF file and delete all hydrogen atoms. Save as a new pdb or cif file.
@@ -212,14 +211,17 @@ class Cleaver:
         Returns:
             None
         """
+
         def is_hydrogen_pdb(line: str) -> bool:
-            return (line.startswith("ATOM") or line.startswith("HETATM")) and line[12:16].strip().startswith("H")
+            return (
+                line.startswith("ATOM") or line.startswith("HETATM")
+            ) and line[12:16].strip().startswith("H")
 
         def is_hydrogen_cif(line: str) -> bool:
             return line.startswith("ATOM") and " H" in line
 
         # Determine file format based on extension
-        file_extension = input_file.split('.')[-1].lower()
+        file_extension = input_file.split(".")[-1].lower()
 
         # If output_filename is not provided, create the default one
         if output_filename is None:
@@ -236,13 +238,14 @@ class Cleaver:
                         if not is_hydrogen_cif(line):
                             output_f.write(line)
                     else:
-                        raise ValueError("Unsupported file format. Only pdb and cif are supported.")
-
+                        raise ValueError(
+                            "Unsupported file format. Only pdb and cif are supported."
+                        )
 
     def remove_water_atoms(
-            self,
-            input_file: str,
-            output_filename: str = None,
+        self,
+        input_file: str,
+        output_filename: str = None,
     ):
         """
         Delete all water atoms from pdb or cif file and save as new file.
@@ -254,14 +257,19 @@ class Cleaver:
         Returns:
             None
         """
+
         def is_water_pdb(line: str) -> bool:
-            return (line.startswith("ATOM") or line.startswith("HETATM")) and line[17:20].strip() == "HOH"
+            return (
+                line.startswith("ATOM") or line.startswith("HETATM")
+            ) and line[17:20].strip() == "HOH"
 
         def is_water_cif(line: str) -> bool:
-            return (line.startswith("ATOM") or line.startswith("HETATM")) and "HOH" in line
+            return (
+                line.startswith("ATOM") or line.startswith("HETATM")
+            ) and "HOH" in line
 
         # Determine file format based on extension
-        file_extension = input_file.split('.')[-1].lower()
+        file_extension = input_file.split(".")[-1].lower()
 
         # If output_filename is not provided, create the default one
         if output_filename is None:
@@ -278,12 +286,14 @@ class Cleaver:
                         if not is_water_cif(line):
                             output_f.write(line)
                     else:
-                        raise ValueError("Unsupported file format. Only pdb and cif are supported.")
+                        raise ValueError(
+                            "Unsupported file format. Only pdb and cif are supported."
+                        )
 
     def remove_hetatoms(
-            self,
-            input_file: str,
-            output_filename: str = None,
+        self,
+        input_file: str,
+        output_filename: str = None,
     ):
         """
         Load a pdb or cif file and delete all HETATM lines and save as a new file.
@@ -303,7 +313,7 @@ class Cleaver:
             return "HETATM" in line
 
         # Determine file format based on extension
-        file_extension = input_file.split('.')[-1].lower()
+        file_extension = input_file.split(".")[-1].lower()
 
         # If output_filename is not provided, create the default one
         if output_filename is None:
@@ -320,4 +330,6 @@ class Cleaver:
                         if not is_hetatm_cif(line):
                             output_f.write(line)
                     else:
-                        raise ValueError("Unsupported file format. Only pdb and cif are supported.")
+                        raise ValueError(
+                            "Unsupported file format. Only pdb and cif are supported."
+                        )
