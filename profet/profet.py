@@ -243,3 +243,54 @@ class Fetcher:
                 )
         else:
             print("Please first download the protein structure using profet.")
+
+    def remove_hydrogens(
+        self,
+        input_file: str,
+        output_filename: str = None,
+    ):
+        """
+        Load a PDB or CIF file and delete all hydrogen atoms. Save as a new pdb or cif file.
+
+        Args:
+            input_file: Path to the input file (pdb or cif)
+            output_filename: Name of the output file to save without hydrogens. If not provided, defaults to originalname_nohydrogens.pdb or originalname_nohydrogens.cif.
+        Returns:
+            None
+        """
+        self.Cleaver.remove_hydrogens(input_file, output_filename)
+
+    def remove_water_atoms(
+        self,
+        input_file: str,
+        output_filename: str = None,
+    ):
+        """
+        Delete all water atoms from pdb or cif file and save as new file.
+
+        Args:
+            input_file: Path to the input file (pdb or cif)
+            output_filename: Name of the output file to save without water atoms.
+                             If not provided, defaults to originalname_nowater.pdb or originalname_nowater.cif.
+        Returns:
+            None
+        """
+        self.Cleaver.remove_water_atoms(input_file, output_filename)
+
+    def remove_hetatoms(
+        self,
+        input_file: str,
+        output_filename: str = None,
+    ):
+        """
+        Load a pdb or cif file and delete all HETATM lines and save as a new file.
+
+        Args:
+            input_file: Path to the input file (pdb or cif)
+            output_filename: Name of the output file to save without HETATM entries.
+                             If not provided, defaults to originalname_nohetatm.pdb or originalname_nohetatm.cif.
+        Returns:
+            None
+        """
+
+        self.Cleaver.remove_hetatoms(input_file, output_filename)
