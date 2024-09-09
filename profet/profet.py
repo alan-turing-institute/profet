@@ -260,7 +260,7 @@ class Fetcher:
         """
         self.Cleaver.remove_hydrogens(input_file, output_filename)
 
-    def remove_water_atoms(
+    def remove_water(
         self,
         input_file: str,
         output_filename: str = None,
@@ -277,7 +277,7 @@ class Fetcher:
         """
         self.Cleaver.remove_water_atoms(input_file, output_filename)
 
-    def remove_hetatoms(
+    def remove_HETATM(
         self,
         input_file: str,
         output_filename: str = None,
