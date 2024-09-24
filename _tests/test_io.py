@@ -156,8 +156,9 @@ def test_command_line_main(tmpdir, test_id):
         lines = list(infile.readlines())
         _, filename, _ = lines[-1].split("'")
         assert os.path.exists(filename)
-
-def test_fetcher_cleave_off_signal_peptides_pdb(tmpdir, "P45523"):
+        
+@pytest.mark.parametrize("uniprot_id", ["P45523"])
+def test_fetcher_remove_stuff(tmpdir, uniprot_id):
     fetcher = Fetcher()
     fetcher.set_directory(str(tmpdir))
     fetcher.get_file(
