@@ -186,15 +186,27 @@ class Fetcher:
         else:
             raise RuntimeError("Database not available: %s" % db)
 
-    def cleave_off_signal_peptides(
+    def remove(
         self,
         uniprot_id: str,
+        signal_peptides=True,
+        hydrogens=True,
+        water=True,
+        hetatoms=True,
+        output_filename: str = None,
     ):
         """
-        Deletes the signal peptides from the structure according to UniProt.
+        Removes signal peptides according to UniProt, hydrogens, water molecules, and HETATM entries based on the flags passed.
 
         Args:
             uniprot_id: UniProt ID of the structure.
+            signal_peptides: Whether to remove signal peptides (default: True)
+            hydrogens: Whether to remove hydrogens (default: True)
+            water: Whether to remove water molecules (default: True)
+            hetatoms: Whether to remove HETATM entries (default: True)
+            output_filename: Optional custom output filename.
+        Returns:
+            None
 
         """
         # Get the PDB cache
@@ -202,95 +214,35 @@ class Fetcher:
         identifier, _, _ = self.pdb.get_pdb(uniprot_id, filetype="pdb")
         if uniprot_id in cache:
             filename = cache[uniprot_id]
-            signal_peptides = self.Cleaver.signal_residuenumbers_requester(
+            signal_list = self.Cleaver.signal_residuenumbers_requester(
                 uniprot_id
             )
-            # Distinguish between pdb and cif format
-            if filename.lower().endswith(".pdb"):
-                new_name = self.Cleaver.anamder_pdb(filename, signal_peptides)
-                self.Cleaver.remove_signal_peptide_pdb(
-                    filename, signal_peptides, new_name
-                )
-            elif filename.lower().endswith(".cif"):
-                new_name = self.Cleaver.anamder_cif(filename, signal_peptides)
-                self.Cleaver.remove_signal_peptide_cif(
-                    filename, signal_peptides, new_name
-                )
-            else:
-                print(
-                    "Unsupported file format. Please download a PDB or CIF file using profet."
-                )
+
+            self.Cleaver.remove_nonmain(
+                filename,
+                signal_list,
+                signal_peptides,
+                hydrogens,
+                water,
+                hetatoms,
+                output_filename,
+            )
+
         # Make sure the file was not annotated by the get_pdb in the case of a ProteinDataBank pull
         elif identifier in cache:
             filename = cache[identifier]
-            signal_peptides = self.Cleaver.signal_residuenumbers_requester(
+            signal_list = self.Cleaver.signal_residuenumbers_requester(
                 uniprot_id
             )
-            # Distinguish between pdb and cif format
-            if filename.lower().endswith(".pdb"):
-                new_name = self.Cleaver.anamder_pdb(filename, signal_peptides)
-                self.Cleaver.remove_signal_peptide_pdb(
-                    filename, signal_peptides, new_name
-                )
-            elif filename.lower().endswith(".cif"):
-                new_name = self.Cleaver.anamder_cif(filename, signal_peptides)
-                self.Cleaver.remove_signal_peptide_cif(
-                    filename, signal_peptides, new_name
-                )
-            else:
-                print(
-                    "Unsupported file format. Please download a PDB or CIF file using profet."
-                )
+            self.Cleaver.remove_nonmain(
+                filename,
+                signal_list,
+                signal_peptides,
+                hydrogens,
+                water,
+                hetatoms,
+                output_filename,
+            )
+
         else:
             print("Please first download the protein structure using profet.")
-
-    def remove_hydrogens(
-        self,
-        input_file: str,
-        output_filename: str = None,
-    ):
-        """
-        Load a PDB or CIF file and delete all hydrogen atoms. Save as a new pdb or cif file.
-
-        Args:
-            input_file: Path to the input file (pdb or cif)
-            output_filename: Name of the output file to save without hydrogens. If not provided, defaults to originalname_nohydrogens.pdb or originalname_nohydrogens.cif.
-        Returns:
-            None
-        """
-        self.Cleaver.remove_hydrogens(input_file, output_filename)
-
-    def remove_water(
-        self,
-        input_file: str,
-        output_filename: str = None,
-    ):
-        """
-        Delete all water atoms from pdb or cif file and save as new file.
-
-        Args:
-            input_file: Path to the input file (pdb or cif)
-            output_filename: Name of the output file to save without water atoms.
-                             If not provided, defaults to originalname_nowater.pdb or originalname_nowater.cif.
-        Returns:
-            None
-        """
-        self.Cleaver.remove_water_atoms(input_file, output_filename)
-
-    def remove_HETATM(
-        self,
-        input_file: str,
-        output_filename: str = None,
-    ):
-        """
-        Load a pdb or cif file and delete all HETATM lines and save as a new file.
-
-        Args:
-            input_file: Path to the input file (pdb or cif)
-            output_filename: Name of the output file to save without HETATM entries.
-                             If not provided, defaults to originalname_nohetatm.pdb or originalname_nohetatm.cif.
-        Returns:
-            None
-        """
-
-        self.Cleaver.remove_hetatoms(input_file, output_filename)
