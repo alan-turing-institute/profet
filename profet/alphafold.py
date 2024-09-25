@@ -5,6 +5,7 @@ https://alphafold.ebi.ac.uk/files/AF-F4HVG8-F1-predicted_aligned_error_v2.json
 
 read entry: https://alphafold.ebi.ac.uk/entry/F4HVG8
 find cif, download that file"""
+
 from requests_html import HTMLSession
 import requests
 from bs4 import BeautifulSoup
