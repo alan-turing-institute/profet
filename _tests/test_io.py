@@ -157,12 +157,11 @@ def test_command_line_main(tmpdir, test_id):
         _, filename, _ = lines[-1].split("'")
         assert os.path.exists(filename)
         
-@pytest.mark.parametrize("uniprot_id", ["P45523"])
-def test_fetcher_remove_stuff(tmpdir, uniprot_id):
+def test_fetcher_remove_stuff(tmpdir, "P45523"):
     fetcher = Fetcher()
     fetcher.set_directory(str(tmpdir))
     fetcher.get_file(
-            uniprot_id=ONE_SIGNAL_PEPTIDE, filetype="pdb", filesave=True, db=pdb
+            uniprot_id="P45523", filetype="pdb", filesave=True, db=pdb
         )
-    fetcher.remove(ONE_SIGNAL_PEPTIDE)
+    fetcher.remove("P45523")
     assert os.path.exists(str(tmpdir) + "/" + "p45523_1q6u_nosignal1to25_nohydrogens_nowater_nohetatm.pdb")
