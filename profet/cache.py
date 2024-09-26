@@ -35,7 +35,7 @@ class PDBFileCache(object):
         # The manifest filename
         self.manifest = os.path.join(self.directory, "manifest.txt")
 
-    def path(self, uniprot_id: str, filetype: str = "pdb") -> str:
+    def path(self, uniprot_id: str, filetype: str = "cif") -> str:
         """
         Get the proposed path
 

@@ -44,7 +44,7 @@ class Alphafold_DB:
         r = requests.get(url)
         return r.status_code != 404
 
-    def get_file_url(self, uniprot_id: str, filetype: str = "pdb") -> str:
+    def get_file_url(self, uniprot_id: str, filetype: str = "cif") -> str:
         """
         Get file url relative to an id from the the Alphafold entry page
 
@@ -77,7 +77,7 @@ class Alphafold_DB:
         # Return the URL
         return url["href"]
 
-    def make_url(self, uniprot_id: str, filetype: str = "pdb") -> str:
+    def make_url(self, uniprot_id: str, filetype: str = "cif") -> str:
         """
         Make the URL for the protein
 
@@ -109,7 +109,7 @@ class Alphafold_DB:
     def get_pdb(
         self,
         uniprot_id: str,
-        filetype: str = "pdb",
+        filetype: str = "cif",
     ) -> tuple:
         """
         Returns pdb/cif as strings, saves to file if requested.
