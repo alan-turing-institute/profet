@@ -79,14 +79,18 @@ class Cleaver:
             None
         """
 
+        # Ensure signal_list is a list or an empty list if None
+        if signal_list is None:
+            signal_list = []
+
         # Create dynamic parts of the filename
         filename_parts = []
-        if signal_peptides and signal_list != []:
+        if signal_peptides and signal_list:
             signal_info = "_".join(
                 [f"{start}to{end}" for start, end in signal_list]
             )
             filename_parts.append(f"nosignal{signal_info}")
-        if signal_peptides and signal_list == []:
+        if signal_peptides and not signal_list:
             signal_info = "none"
             filename_parts.append(f"nosignal{signal_info}")
         if hydrogens:
