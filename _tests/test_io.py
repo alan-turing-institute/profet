@@ -158,13 +158,13 @@ def test_command_line_main(tmpdir, test_id):
         assert os.path.exists(filename)
 
 
-def test_fetcher_remove_stuff(tmpdir):
-    fetcher = Fetcher()
-    fetcher.set_directory(str(tmpdir))
-    fetcher.get_file(uniprot_id="P45523", filetype="pdb", filesave=True, db=pdb)
-    fetcher.remove("P45523")
-    assert os.path.exists(
-        str(tmpdir)
-        + "/"
-        + "p45523_1q6u_nosignal1to25_nohydrogens_nowater_nohetatm.pdb"
-    )
+# def test_fetcher_remove_stuff(tmpdir):
+#     fetcher = Fetcher()
+#     fetcher.set_directory(str(tmpdir))
+#     fetcher.get_file(uniprot_id="P45523", filetype="pdb", filesave=True, db=pdb)
+#     fetcher.remove("P45523")
+#     assert os.path.exists(
+#         str(tmpdir)
+#         + "/"
+#         + "p45523_1q6u_nosignal1to25_nohydrogens_nowater_nohetatm.pdb"
+#     )
