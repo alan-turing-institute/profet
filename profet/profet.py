@@ -54,7 +54,7 @@ class Fetcher:
     def file_from_db(
         self,
         prot_id: str,
-        filetype: str = "pdb",
+        filetype: str = "cif",
         db: str = "pdb",
     ) -> tuple:
         """
@@ -76,7 +76,7 @@ class Fetcher:
     def get_file(
         self,
         uniprot_id: str,
-        filetype: str = "pdb",
+        filetype: str = "cif",
         filesave: bool = False,
         db: str = "pdb",
     ) -> tuple:
@@ -211,7 +211,7 @@ class Fetcher:
         """
         # Get the PDB cache
         cache = PDBFileCache(directory=self.save_directory)
-        identifier, _, _ = self.pdb.get_pdb(uniprot_id, filetype="pdb")
+        identifier, _, _ = self.pdb.get_pdb(uniprot_id, filetype="cif")
         if uniprot_id in cache:
             filename = cache[uniprot_id]
             signal_list = self.Cleaver.signal_residuenumbers_requester(
