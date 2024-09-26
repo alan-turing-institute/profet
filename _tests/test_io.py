@@ -161,7 +161,9 @@ def test_command_line_main(tmpdir, test_id):
 def test_fetcher_remove_stuff(tmpdir):
     fetcher = Fetcher()
     fetcher.set_directory(str(tmpdir))
-    fetcher.get_file(uniprot_id="P45523", filetype="pdb", filesave=True, db=pdb)
+    fetcher.get_file(
+        uniprot_id="P45523", filetype="pdb", filesave=True, db="pdb"
+    )
     fetcher.remove("P45523")
     assert os.path.exists(
         str(tmpdir)
