@@ -1,8 +1,5 @@
-import pypdb.clients.pdb.pdb_client
-from pypdb.clients.search.search_client import perform_search
-from pypdb.clients.search.search_client import ReturnType
-from pypdb.clients.search.operators import text_operators
-from pypdb.clients.pdb.pdb_client import PDBFileType
+from urllib.request import urlretrieve
+from rcsbsearchapi import TextQuery
 
 
 class PDB_DB:
@@ -16,8 +13,25 @@ class PDB_DB:
         Initialise the PDB data base class
 
         """
-        self.return_type = ReturnType.ENTRY
+        pass
+        # self.return_type = ReturnType.ENTRY
         self.results = []
+
+    def uniprot_id_to_pdb_id(self, uniprot_id: str):
+        """
+        Convert a uniprot_id to a pdb_id by selecting first entry
+
+        Args:
+            uniprot_id: The uniprot id of the protein
+
+        Returns:
+            The PDB id
+
+        """
+        query = TextQuery(value=uniprot_id)
+        for result in query():
+            return result
+        return None
 
     def check_structure(self, uniprot_id: str) -> bool:
         """
@@ -30,12 +44,28 @@ class PDB_DB:
             Is the protein in the PDB (True/False)
 
         """
-        search_operator = text_operators.DefaultOperator(value=uniprot_id)
-        try:
-            self.results = perform_search(search_operator, self.return_type)
+        pdb_id = self.uniprot_id_to_pdb_id(uniprot_id)
+        if pdb_id is not None:
+            self.results = [pdb_id]
             return True
-        except ValueError:
-            return False
+        return False
+
+    def make_url(self, uniprot_id: str, filetype: str = "pdb") -> str:
+        """
+        Make the URL for the protein
+
+        Args:
+            uniprot_id: The uniprot id of the protein
+            filetype: The type of file to download (pdb or cif)
+
+        Returns:
+            The URL of the file to download
+
+        """
+
+        uniprot_id = uniprot_id.upper()
+        url = f"https://files.rcsb.org/download/{uniprot_id}.{filetype}"
+        return url
 
     def get_pdb(
         self,
@@ -54,26 +84,26 @@ class PDB_DB:
 
         """
 
-        # Search for the protein if we have not already done so
         if not self.results:
-            search_operator = text_operators.DefaultOperator(value=uniprot_id)
-            self.results = perform_search(search_operator, self.return_type)
+            self.results = [self.uniprot_id_to_pdb_id(uniprot_id)]
 
         # Try to get the PDB file
         pdb_id = self.results[0]
-        filedata = pypdb.clients.pdb.pdb_client.get_pdb_file(
-            pdb_id, PDBFileType(filetype), compression=True
-        )
 
-        # If we couldn't find the file toggle the filetype and try again
-        if filedata is None:
+        try:
+            url = self.make_url(pdb_id, filetype)
+            filename, result = urlretrieve(url)
+            with open(filename) as file:
+                filedata = file.read()
+        except Exception:
             if filetype == "pdb":
                 filetype = "cif"
             else:
                 filetype = "pdb"
-            filedata = pypdb.clients.pdb.pdb_client.get_pdb_file(
-                pdb_id, PDBFileType(filetype), compression=True
-            )
+            url = self.make_url(pdb_id, filetype)
+            filename, result = urlretrieve(url)
+            with open(filename) as file:
+                filedata = file.read()
 
         # If pdb is not the same then add the pdb id to the uniprot id as the identifier
         if pdb_id.lower() != uniprot_id.lower():
