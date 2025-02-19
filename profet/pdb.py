@@ -70,7 +70,7 @@ class PDB_DB:
     def get_pdb(
         self,
         uniprot_id: str,
-        filetype: str = "pdb",
+        filetype: str = "cif",
     ) -> tuple:
         """
         Returns pdb/cif as strings, saves to file if requested

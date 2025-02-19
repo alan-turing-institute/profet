@@ -36,7 +36,7 @@ def get_parser(parser: ArgumentParser = None) -> ArgumentParser:
         "--filetype",
         type=str,
         dest="filetype",
-        default="pdb",
+        default="cif",
         choices=["pdb", "cif"],
         help="The file type to download",
     )
